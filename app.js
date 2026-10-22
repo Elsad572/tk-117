@@ -37,7 +37,10 @@ const TRANSLATIONS = {
         creator: "Yaradıcı:", uni: "Universitet:", faculty: "Fakültə:", specialty: "İxtisas:", 
         leaderboard: "Ümumi Reytinq Siyahısı", clickInfo: "Həftəlik balları görmək üçün tələbə adının üstünə klikləyin.", 
         nameHeader: "Ad Soyad", scoreHeader: "Ümumi Bal",
-        pyTitle: "PYTHON REYTİNQ SİYAHISI", cppTitle: "C++ REYTİNQ SİYAHISI", motto: '"ÖYRƏN, GÜCLƏN, YARAT"',
+        progTech: "PROQRAMLAŞDIRMA TEXNOLOGİYALARI",
+        motto: '"ÖYRƏN, GÜCLƏN, YARAT"',
+        pyTitle: "PYTHON REYTİNQ SİYAHISI", 
+        cppTitle: "C++ REYTİNQ SİYAHISI", 
         current: "Cari", previous: "Keçmiş", increase: "Artan"
     },
     tr: { 
@@ -45,7 +48,10 @@ const TRANSLATIONS = {
         creator: "Geliştirici:", uni: "Üniversite:", faculty: "Fakülte:", specialty: "Bölüm:", 
         leaderboard: "Genel Sıralama Listesi", clickInfo: "Haftalık puanları görmek için öğrenci adına tıklayın.", 
         nameHeader: "Ad Soyad", scoreHeader: "Toplam Puan",
-        pyTitle: "PYTHON SIRALAMA LİSTESİ", cppTitle: "C++ SIRALAMA LİSTESİ", motto: '"ÖĞREN, GÜÇLEN, YARAT"',
+        progTech: "PROGRAMLAMA TEKNOLOJİLERİ",
+        motto: '"ÖĞREN, GÜÇLEN, YARAT"',
+        pyTitle: "PYTHON SIRALAMA LİSTESİ", 
+        cppTitle: "C++ SIRALAMA LİSTESİ", 
         current: "Mevcut", previous: "Geçmiş", increase: "Artış"
     },
     en: { 
@@ -53,7 +59,10 @@ const TRANSLATIONS = {
         creator: "Creator:", uni: "University:", faculty: "Faculty:", specialty: "Specialty:", 
         leaderboard: "Overall Leaderboard", clickInfo: "Click on a student's name to view weekly scores.", 
         nameHeader: "Full Name", scoreHeader: "Total Score",
-        pyTitle: "PYTHON LEADERBOARD", cppTitle: "C++ LEADERBOARD", motto: '"LEARN, EMPOWER, CREATE"',
+        progTech: "PROGRAMMING TECHNOLOGIES",
+        motto: '"LEARN, EMPOWER, CREATE"',
+        pyTitle: "PYTHON LEADERBOARD", 
+        cppTitle: "C++ LEADERBOARD", 
         current: "Current", previous: "Previous", increase: "Change"
     },
     ru: { 
@@ -61,7 +70,10 @@ const TRANSLATIONS = {
         creator: "Создатель:", uni: "Университет:", faculty: "Факультет:", specialty: "Специальность:", 
         leaderboard: "Общий Рейтинг", clickInfo: "Нажмите на имя студента, чтобы увидеть еженедельные баллы.", 
         nameHeader: "Имя Фамилия", scoreHeader: "Общий Балл",
-        pyTitle: "РЕЙТИНГ PYTHON", cppTitle: "РЕЙТИНГ C++", motto: '"УЧИСЬ, УСИЛИВАЙСЯ, СОЗДАВАЙ"',
+        progTech: "ТЕХНОЛОГИИ ПРОГРАММИРОВАНИЯ",
+        motto: '"УЧИСЬ, УСИЛИВАЙСЯ, СОЗДАВАЙ"',
+        pyTitle: "РЕЙТИНГ PYTHON", 
+        cppTitle: "РЕЙТИНГ C++", 
         current: "Текущий", previous: "Прошлый", increase: "Изм."
     }
 };
