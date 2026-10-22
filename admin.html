@@ -9,7 +9,12 @@
 <body>
     <header>
         <div class="logo">⚡ TK-117</div>
-        <nav>
+        <div class="header-controls">
+            <div class="hamburger" id="hamburgerBtn">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <nav id="navMenu" class="nav-drawer">
             <a href="cpp-rank.html">C++</a>
             <a href="python-rank.html">Python</a>
             <a href="index.html">Common</a>
@@ -30,28 +35,97 @@
             </form>
         </div>
 
-        <!-- Yönetim Paneli (Giriş yapıldıktan sonra görünür) -->
+        <!-- İdarəetmə Paneli -->
         <div id="adminPanel" class="card hidden">
-            <h2>Tələbəyə Həftəlik Bal Əlavə Et / Yenilə</h2>
+            <h2>Yeni Tələbə Və Ya Həftəlik Bal Əlavə Et</h2>
             <form id="addStudentForm">
                 <input type="text" id="studentName" placeholder="Tələbənin Adı və Soyadı" required>
                 <input type="number" id="weekNum" placeholder="Həftə Nömrəsi (Məs: 1, 2, 3...)" required>
-                <input type="number" id="cppPoints" placeholder="C++ Balı" value="0" required>
-                <input type="number" id="pythonPoints" placeholder="Python Balı" value="0" required>
-                <button type="submit">Balı Əlavə Et / Yenilə</button>
+
+                <!-- C++ Platforma Balları -->
+                <div id="cppCategoryGroup" style="border: 1px solid #30363d; padding: 12px; border-radius: 6px; margin-top: 5px;">
+                    <h4 style="color: #2ea44f; margin-bottom: 8px;">C++ Balları (FM, SO, EO, CF, HR)</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); gap: 8px;">
+                        <input type="number" id="cpp_fm" placeholder="FM" value="0">
+                        <input type="number" id="cpp_so" placeholder="SO" value="0">
+                        <input type="number" id="cpp_eo" placeholder="EO" value="0">
+                        <input type="number" id="cpp_cf" placeholder="CF" value="0">
+                        <input type="number" id="cpp_hr" placeholder="HR" value="0">
+                    </div>
+                </div>
+
+                <!-- Python Platforma Balları -->
+                <div id="pythonCategoryGroup" style="border: 1px solid #30363d; padding: 12px; border-radius: 6px; margin-top: 5px;">
+                    <h4 style="color: #2ea44f; margin-bottom: 8px;">Python Balları (FM, SO, EO, CF, HR)</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); gap: 8px;">
+                        <input type="number" id="py_fm" placeholder="FM" value="0">
+                        <input type="number" id="py_so" placeholder="SO" value="0">
+                        <input type="number" id="py_eo" placeholder="EO" value="0">
+                        <input type="number" id="py_cf" placeholder="CF" value="0">
+                        <input type="number" id="py_hr" placeholder="HR" value="0">
+                    </div>
+                </div>
+
+                <button type="submit" style="margin-top: 10px;">Balları Yadda Saxla</button>
             </form>
 
             <hr style="margin: 25px 0; border-color: #30363d;">
 
-            <h2 style="color: #da3633;">Tələbə / Bal Sil</h2>
-            <form id="deleteStudentForm">
-                <input type="text" id="deleteStudentName" placeholder="Silinəcək Tələbənin Adı və Soyadı" required>
-                <button type="submit" style="background-color: #da3633;" id="deleteBtnText">Tələbəni Sil</button>
-            </form>
+            <h2>Mövcud Tələbələrin Siyahısı (Düzəliş Və Silmə)</h2>
+            <div style="overflow-x: auto;">
+                <div class="leaderboard-header rank-table-header">
+                    <span style="width: 30px;">#</span>
+                    <span style="min-width: 120px;">Ad Soyad</span>
+                    <span>C++ Cari</span>
+                    <span>Py Cari</span>
+                    <span>Əməliyyat</span>
+                </div>
+                <ul id="adminStudentList"></ul>
+            </div>
 
             <button id="logoutBtn" class="logout-btn">Çıxış Et</button>
         </div>
     </main>
+
+    <!-- Düzəliş Modalı -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeEditModal">&times;</span>
+            <h3 style="color: #2ea44f; margin-bottom: 12px;">Tələbə Məlumatlarını Düzəlt</h3>
+            <form id="editStudentForm">
+                <input type="hidden" id="editOriginalName">
+                <label style="font-size: 12px; color: #8b949e;">Ad Soyad:</label>
+                <input type="text" id="editStudentName" required>
+
+                <label style="font-size: 12px; color: #8b949e; margin-top: 5px;">Redaktə Ediləcək Həftə:</label>
+                <input type="number" id="editWeekNum" placeholder="Həftə Nömrəsi" value="1" required>
+
+                <div id="editCppGroup" style="border: 1px solid #30363d; padding: 10px; border-radius: 6px; margin-top: 5px;">
+                    <h5 style="color: #2ea44f; margin-bottom: 5px;">C++ (FM, SO, EO, CF, HR)</h5>
+                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px;">
+                        <input type="number" id="edit_cpp_fm" value="0">
+                        <input type="number" id="edit_cpp_so" value="0">
+                        <input type="number" id="edit_cpp_eo" value="0">
+                        <input type="number" id="edit_cpp_cf" value="0">
+                        <input type="number" id="edit_cpp_hr" value="0">
+                    </div>
+                </div>
+
+                <div id="editPyGroup" style="border: 1px solid #30363d; padding: 10px; border-radius: 6px; margin-top: 5px;">
+                    <h5 style="color: #2ea44f; margin-bottom: 5px;">Python (FM, SO, EO, CF, HR)</h5>
+                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px;">
+                        <input type="number" id="edit_py_fm" value="0">
+                        <input type="number" id="edit_py_so" value="0">
+                        <input type="number" id="edit_py_eo" value="0">
+                        <input type="number" id="edit_py_cf" value="0">
+                        <input type="number" id="edit_py_hr" value="0">
+                    </div>
+                </div>
+
+                <button type="submit" style="margin-top: 10px;">Dəyişiklikləri Yadda Saxla</button>
+            </form>
+        </div>
+    </div>
 
     <script type="module" src="app.js"></script>
 </body>
