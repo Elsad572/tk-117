@@ -10,6 +10,8 @@
     <header>
         <div class="logo">⚡ TK-117</div>
         <nav>
+            <a href="cpp-rank.html">C++</a>
+            <a href="python-rank.html">Python</a>
             <a href="index.html">Common</a>
             <a href="cpp.html">C++ Compiler</a>
             <a href="python.html">Python Compiler</a>
@@ -21,19 +23,20 @@
         <div id="loginSection" class="card">
             <h2>Admin Girişi</h2>
             <form id="loginForm">
-                <input type="email" id="adminEmail" placeholder="Email" required>
+                <input type="text" id="adminUsername" placeholder="İstifadəçi Adı (Elsad / Aytac)" required>
                 <input type="password" id="adminPassword" placeholder="Şifrə" required>
                 <button type="submit">Daxil ol</button>
             </form>
         </div>
 
         <div id="adminPanel" class="card hidden">
-            <h2>Tələbə Məlumatı Və Xalları Əlavə Et</h2>
+            <h2>Tələbəyə Həftəlik Bal Əlavə Et</h2>
             <form id="addStudentForm">
                 <input type="text" id="studentName" placeholder="Tələbənin Adı və Soyadı" required>
-                <input type="number" id="cppPoints" placeholder="C++ Xalı" value="0" required>
-                <input type="number" id="pythonPoints" placeholder="Python Xalı" value="0" required>
-                <button type="submit">Yadda Saxla / Yenilə</button>
+                <input type="number" id="weekNum" placeholder="Həftə Nömrəsi (Məs: 1, 2, 3...)" required>
+                <input type="number" id="cppPoints" placeholder="C++ Balı" value="0" required>
+                <input type="number" id="pythonPoints" placeholder="Python Balı" value="0" required>
+                <button type="submit">Balı Əlavə Et / Yenilə</button>
             </form>
             <button id="logoutBtn" class="logout-btn">Çıxış Et</button>
         </div>
