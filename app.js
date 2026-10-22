@@ -14,6 +14,88 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Üç Xətt Menyu Açıb-Bağlamaq
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const navMenu = document.getElementById('navMenu');
+if (hamburgerBtn && navMenu) {
+    hamburgerBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navMenu.classList.toggle('active');
+    });
+    document.addEventListener('click', () => navMenu.classList.remove('active'));
+}
+
+// IT Lüğəti Məlumatları
+const IT_DICTIONARY = [
+    { term: "Algorithm", az: "Alqoritm", tr: "Algoritma", ru: "Алгоритм" },
+    { term: "Compiler", az: "Kompilyator", tr: "Derleyici", ru: "Компилятор" },
+    { term: "Variable", az: "Dəyişən", tr: "Değişken", ru: "Переменная" },
+    { term: "Function", az: "Funksiya", tr: "Fonksiyon", ru: "Функция" },
+    { term: "Pointer", az: "Göstərici (Pointer)", tr: "İşaretçi", ru: "Указатель" },
+    { term: "Array", az: "Massiv", tr: "Dizi", ru: "Массив" },
+    { term: "Recursion", az: "Rekursiya", tr: "Özyineleme", ru: "Рекурсия" },
+    { term: "Object", az: "Obyekt", tr: "Nesne", ru: "Объект" },
+    { term: "Database", az: "Verilənlər BAZASI", tr: "Veritabanı", ru: "База данных" },
+    { term: "Inheritance", az: "Varislik", tr: "Kalıtım", ru: "Наследование" }
+];
+
+// Lüğət Modalı Məntiqi
+const dictBtn = document.getElementById('dictionaryBtn');
+const dictModal = document.getElementById('dictModal');
+const closeDictModal = document.getElementById('closeDictModal');
+const dictList = document.getElementById('dictList');
+const dictSearch = document.getElementById('dictSearch');
+
+function renderDict(filter = "") {
+    if (!dictList) return;
+    dictList.innerHTML = "";
+    const filtered = IT_DICTIONARY.filter(item => 
+        item.term.toLowerCase().includes(filter.toLowerCase()) || 
+        item.az.toLowerCase().includes(filter.toLowerCase()) ||
+        item.tr.toLowerCase().includes(filter.toLowerCase()) ||
+        item.ru.toLowerCase().includes(filter.toLowerCase())
+    );
+
+    filtered.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'dict-item';
+        div.innerHTML = `
+            <div class="dict-term">🇬🇧 ${item.term}</div>
+            <div class="dict-trans">
+                <span>🇦🇿 AZ: ${item.az}</span>
+                <span>🇹🇷 TR: ${item.tr}</span>
+                <span>🇷🇺 RU: ${item.ru}</span>
+            </div>
+        `;
+        dictList.appendChild(div);
+    });
+}
+
+if (dictBtn) dictBtn.onclick = () => { renderDict(); dictModal.style.display = 'flex'; };
+if (closeDictModal) closeDictModal.onclick = () => dictModal.style.display = 'none';
+if (dictSearch) dictSearch.oninput = (e) => renderDict(e.target.value);
+
+// Dil Seçimi Və İNTERFEYS TƏRCÜMƏSİ
+const TRANSLATIONS = {
+    az: { dict: "IT Lüğəti", teaches: "Tədris edir:", infoTitle: "Məfhum və Təşkilat Məlumatları", creator: "Yaradıcı:", uni: "Universitet:", faculty: "Fakültə:", specialty: "İxtisas:", leaderboard: "Ümumi Reytinq Siyahısı", clickInfo: "Həftəlik balları görmək üçün tələbə adının üstünə klikləyin.", nameHeader: "Ad Soyad", scoreHeader: "Ümumi Bal" },
+    tr: { dict: "BT Sözlüğü", teaches: "Eğitmen:", infoTitle: "Bilgi ve Organizasyon", creator: "Geliştirici:", uni: "Üniversite:", faculty: "Fakülte:", specialty: "Bölüm:", leaderboard: "Genel Sıralama Listesi", clickInfo: "Haftalık puanları görmek için öğrenci adına tıklayın.", nameHeader: "Ad Soyad", scoreHeader: "Toplam Puan" },
+    en: { dict: "IT Dictionary", teaches: "Instructor:", infoTitle: "Info & Organization", creator: "Creator:", uni: "University:", faculty: "Faculty:", specialty: "Specialty:", leaderboard: "Overall Leaderboard", clickInfo: "Click on a student's name to view weekly scores.", nameHeader: "Full Name", scoreHeader: "Total Score" },
+    ru: { dict: "IT Словарь", teaches: "Преподаватель:", infoTitle: "Информация и Организация", creator: "Создатель:", uni: "Университет:", faculty: "Факультет:", specialty: "Специальность:", leaderboard: "Общий Рейтинг", clickInfo: "Нажмите на имя студента, чтобы увидеть еженедельные баллы.", nameHeader: "Имя Фамилия", scoreHeader: "Общий Балл" }
+};
+
+const langSelect = document.getElementById('langSelect');
+if (langSelect) {
+    langSelect.addEventListener('change', (e) => {
+        const lang = e.target.value;
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (TRANSLATIONS[lang] && TRANSLATIONS[lang][key]) {
+                el.textContent = TRANSLATIONS[lang][key];
+            }
+        });
+    });
+}
+
 // Modal - Həftəlik Bal Cədvəli
 function openStudentModal(name, data) {
     const modal = document.getElementById('historyModal');
@@ -63,7 +145,7 @@ if (closeModal) {
     closeModal.onclick = () => document.getElementById('historyModal').style.display = 'none';
 }
 
-// Common və başqa Siyahıları Yükləmək
+// Siyahını Yükləmək
 function loadLeaderboard(type, elementId) {
     const listEl = document.getElementById(elementId);
     if (!listEl) return;
@@ -74,12 +156,7 @@ function loadLeaderboard(type, elementId) {
 
         snapshot.forEach(doc => {
             const data = doc.data();
-            let score = 0;
-            
-            if (type === 'common') score = (data.totalCpp || 0) + (data.totalPython || 0);
-            if (type === 'cpp') score = data.totalCpp || 0;
-            if (type === 'python') score = data.totalPython || 0;
-
+            let score = (data.totalCpp || 0) + (data.totalPython || 0);
             students.push({ id: doc.id, name: data.name || doc.id, score, data });
         });
 
@@ -89,18 +166,12 @@ function loadLeaderboard(type, elementId) {
         students.forEach(st => {
             const li = document.createElement('li');
             li.className = 'student-row';
-            
-            if (type === 'common') {
-                li.innerHTML = `
-                    <span>${rank}</span>
-                    <span>${st.name}</span>
-                    <span>C++: ${st.data.lastCpp || 0} | Py: ${st.data.lastPython || 0}</span>
-                    <span><strong>${st.score} pt</strong></span>
-                `;
-            } else {
-                li.innerHTML = `<span>${rank}</span><span>${st.name}</span><span><strong>${st.score} pt</strong></span>`;
-            }
-
+            li.innerHTML = `
+                <span>${rank}</span>
+                <span>${st.name}</span>
+                <span>C++: ${st.data.lastCpp || 0} | Py: ${st.data.lastPython || 0}</span>
+                <span><strong>${st.score} pt</strong></span>
+            `;
             li.onclick = () => openStudentModal(st.name, st.data);
             listEl.appendChild(li);
             rank++;
@@ -109,169 +180,3 @@ function loadLeaderboard(type, elementId) {
 }
 
 loadLeaderboard('common', 'commonList');
-loadLeaderboard('cpp', 'cppList');
-loadLeaderboard('python', 'pythonList');
-
-// Admin Kullanıcı Yetkileri ve Şifreleri
-const ADMINS = {
-    "Elsad": "elsad_29822",
-    "Aytac": "aytac_35723"
-};
-
-const loginForm = document.getElementById('loginForm');
-const loginSection = document.getElementById('loginSection');
-const adminPanel = document.getElementById('adminPanel');
-const logoutBtn = document.getElementById('logoutBtn');
-
-if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const user = document.getElementById('adminUsername').value.trim();
-        const pass = document.getElementById('adminPassword').value.trim();
-
-        if (ADMINS[user] && ADMINS[user] === pass) {
-            localStorage.setItem('adminUser', user);
-            checkAuth();
-            alert("Uğurla daxil oldunuz!");
-        } else {
-            alert("İstifadəçi adı və ya şifrə yanlışdır!");
-        }
-    });
-}
-
-if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-        localStorage.removeItem('adminUser');
-        checkAuth();
-    });
-}
-
-function checkAuth() {
-    if (!loginSection || !adminPanel) return;
-    const currentUser = localStorage.getItem('adminUser');
-
-    if (currentUser) {
-        loginSection.classList.add('hidden');
-        adminPanel.classList.remove('hidden');
-
-        const cppInput = document.getElementById('cppPoints');
-        const deleteBtnText = document.getElementById('deleteBtnText');
-        
-        if (currentUser === 'Aytac') {
-            if (cppInput) {
-                cppInput.style.display = 'none'; // Aytac için C++ alanını tamamen gizle
-                cppInput.value = 0;
-            }
-            if (deleteBtnText) deleteBtnText.textContent = "Tələbənin Yalnız Python Balını Sil";
-        } else {
-            if (cppInput) {
-                cppInput.style.display = 'block'; // Elsad için C++ alanını göster
-            }
-            if (deleteBtnText) deleteBtnText.textContent = "Tələbəni Tamamilə Sil";
-        }
-    } else {
-        loginSection.classList.remove('hidden');
-        adminPanel.classList.add('hidden');
-    }
-}
-
-// Süratli Kontrol
-checkAuth();
-
-// Bal Əlavə etmək
-const addStudentForm = document.getElementById('addStudentForm');
-if (addStudentForm) {
-    addStudentForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const currentUser = localStorage.getItem('adminUser');
-        const name = document.getElementById('studentName').value.trim();
-        const week = document.getElementById('weekNum').value;
-        const cpp = currentUser === 'Aytac' ? 0 : Number(document.getElementById('cppPoints').value);
-        const python = Number(document.getElementById('pythonPoints').value);
-
-        const docRef = doc(db, "students", name);
-        const docSnap = await getDoc(docRef);
-
-        let studentData = { name: name, weeks: {}, totalCpp: 0, totalPython: 0, lastCpp: 0, lastPython: 0 };
-        if (docSnap.exists()) {
-            studentData = docSnap.data();
-            if (!studentData.weeks) studentData.weeks = {};
-        }
-
-        if (!studentData.weeks[week]) {
-            studentData.weeks[week] = { cpp: 0, python: 0 };
-        }
-
-        if (currentUser === 'Aytac') {
-            studentData.weeks[week].python = python;
-            studentData.lastPython = python;
-        } else {
-            studentData.weeks[week].cpp = cpp;
-            studentData.weeks[week].python = python;
-            studentData.lastCpp = cpp;
-            studentData.lastPython = python;
-        }
-
-        let tCpp = 0, tPy = 0;
-        Object.values(studentData.weeks).forEach(w => {
-            tCpp += (w.cpp || 0);
-            tPy += (w.python || 0);
-        });
-
-        studentData.totalCpp = tCpp;
-        studentData.totalPython = tPy;
-
-        try {
-            await setDoc(docRef, studentData);
-            addStudentForm.reset();
-            checkAuth();
-            alert(`${week}-ci həftə balı uğurla yeniləndi!`);
-        } catch (err) {
-            alert("Xəta: " + err.message);
-        }
-    });
-}
-
-// Silmə Funksiyası
-const deleteStudentForm = document.getElementById('deleteStudentForm');
-if (deleteStudentForm) {
-    deleteStudentForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const currentUser = localStorage.getItem('adminUser');
-        const name = document.getElementById('deleteStudentName').value.trim();
-        const docRef = doc(db, "students", name);
-
-        if (currentUser === 'Aytac') {
-            if (confirm(`${name} adlı tələbənin YALNIZ Python ballarını sıfırlamağa əminsiniz?`)) {
-                try {
-                    const docSnap = await getDoc(docRef);
-                    if (docSnap.exists()) {
-                        let data = docSnap.data();
-                        data.totalPython = 0;
-                        data.lastPython = 0;
-                        if (data.weeks) {
-                            Object.keys(data.weeks).forEach(w => {
-                                data.weeks[w].python = 0;
-                            });
-                        }
-                        await setDoc(docRef, data);
-                        alert(`${name} tələbəsinin Python balları silindi!`);
-                    }
-                    deleteStudentForm.reset();
-                } catch (err) {
-                    alert("Xəta: " + err.message);
-                }
-            }
-        } else {
-            if (confirm(`${name} adlı tələbəni bazadan TAMAMİLƏ silməyə əminsiniz?`)) {
-                try {
-                    await deleteDoc(docRef);
-                    deleteStudentForm.reset();
-                    alert(`${name} uğurla silindi!`);
-                } catch (err) {
-                    alert("Xəta: " + err.message);
-                }
-            }
-        }
-    });
-}
