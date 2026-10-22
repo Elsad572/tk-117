@@ -188,3 +188,67 @@ button { padding: 12px; background-color: #238636; color: white; border: none; b
         grid-template-columns: 1fr;
     }
 }
+/* Qızılı İntellektuallar Bölməsi */
+.podium-section {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.podium-title {
+    color: #d4af37;
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.golden-podium {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.gold-card {
+    background: linear-gradient(135deg, #1f1a0e, #2a2412);
+    border: 2px solid #d4af37;
+    border-radius: 12px;
+    padding: 18px 12px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.35);
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.gold-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+}
+
+.gold-rank {
+    font-size: 16px;
+    font-weight: bold;
+    color: #d4af37;
+    margin-bottom: 6px;
+}
+
+.gold-name {
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.gold-score {
+    font-size: 18px;
+    font-weight: 900;
+    color: #2ea44f;
+}
+
+@media (max-width: 600px) {
+    .golden-podium {
+        grid-template-columns: 1fr;
+    }
+}
