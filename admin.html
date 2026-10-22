@@ -42,30 +42,22 @@
                 <input type="text" id="studentName" placeholder="Tələbənin Adı və Soyadı" required>
                 <input type="number" id="weekNum" placeholder="Həftə Nömrəsi (Məcburi deyil)">
 
+                <!-- KURS SEÇİMİ PANELI -->
+                <div id="addCourseSelection" style="margin-top: 10px; margin-bottom: 10px; display: flex; gap: 15px; font-size: 14px; padding: 5px;">
+                    <label style="color: #c9d1d9; cursor: pointer;"><input type="radio" name="addCourse" value="both" checked> Hər İkisi</label>
+                    <label style="color: #c9d1d9; cursor: pointer;"><input type="radio" name="addCourse" value="cpp"> Yalnız C++</label>
+                    <label style="color: #c9d1d9; cursor: pointer;"><input type="radio" name="addCourse" value="python"> Yalnız Python</label>
+                </div>
+
                 <!-- C++ Platforma Balları -->
                 <div id="cppCategoryGroup" style="border: 1px solid #30363d; padding: 12px; border-radius: 6px; margin-top: 5px;">
                     <h4 style="color: #2ea44f; margin-bottom: 10px;">C++ Balları</h4>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 10px;">
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e; display: block; margin-bottom: 3px;">FM Balı</label>
-                            <input type="number" id="cpp_fm" placeholder="FM" value="0">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e; display: block; margin-bottom: 3px;">SO Balı</label>
-                            <input type="number" id="cpp_so" placeholder="SO" value="0">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e; display: block; margin-bottom: 3px;">EO Balı</label>
-                            <input type="number" id="cpp_eo" placeholder="EO" value="0">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e; display: block; margin-bottom: 3px;">CF Balı</label>
-                            <input type="number" id="cpp_cf" placeholder="CF" value="0">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e; display: block; margin-bottom: 3px;">HR Balı</label>
-                            <input type="number" id="cpp_hr" placeholder="HR" value="0">
-                        </div>
+                        <div><label style="font-size: 11px; color: #8b949e;">FM</label><input type="number" id="cpp_fm" value="0"></div>
+                        <div><label style="font-size: 11px; color: #8b949e;">SO</label><input type="number" id="cpp_so" value="0"></div>
+                        <div><label style="font-size: 11px; color: #8b949e;">EO</label><input type="number" id="cpp_eo" value="0"></div>
+                        <div><label style="font-size: 11px; color: #8b949e;">CF</label><input type="number" id="cpp_cf" value="0"></div>
+                        <div><label style="font-size: 11px; color: #8b949e;">HR</label><input type="number" id="cpp_hr" value="0"></div>
                     </div>
                 </div>
 
@@ -73,26 +65,11 @@
                 <div id="pythonCategoryGroup" style="border: 1px solid #30363d; padding: 12px; border-radius: 6px; margin-top: 5px;">
                     <h4 style="color: #2ea44f; margin-bottom: 10px;">Python Balları</h4>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 10px;">
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e; display: block; margin-bottom: 3px;">FM Balı</label>
-                            <input type="number" id="py_fm" placeholder="FM" value="0">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e; display: block; margin-bottom: 3px;">SO Balı</label>
-                            <input type="number" id="py_so" placeholder="SO" value="0">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e; display: block; margin-bottom: 3px;">EO Balı</label>
-                            <input type="number" id="py_eo" placeholder="EO" value="0">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e; display: block; margin-bottom: 3px;">CF Balı</label>
-                            <input type="number" id="py_cf" placeholder="CF" value="0">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e; display: block; margin-bottom: 3px;">HR Balı</label>
-                            <input type="number" id="py_hr" placeholder="HR" value="0">
-                        </div>
+                        <div><label style="font-size: 11px; color: #8b949e;">FM</label><input type="number" id="py_fm" value="0"></div>
+                        <div><label style="font-size: 11px; color: #8b949e;">SO</label><input type="number" id="py_so" value="0"></div>
+                        <div><label style="font-size: 11px; color: #8b949e;">EO</label><input type="number" id="py_eo" value="0"></div>
+                        <div><label style="font-size: 11px; color: #8b949e;">CF</label><input type="number" id="py_cf" value="0"></div>
+                        <div><label style="font-size: 11px; color: #8b949e;">HR</label><input type="number" id="py_hr" value="0"></div>
                     </div>
                 </div>
 
@@ -102,11 +79,13 @@
             <hr style="margin: 25px 0; border-color: #30363d;">
 
             <h2>Mövcud Tələbələrin Siyahısı (Düzəliş Və Silmə)</h2>
+            
             <!-- Axtarış və Excel Yükləmə Paneli -->
-<div class="tools-container">
-    <input type="text" id="searchInput" class="search-box" placeholder="Tələbənin adını axtar...">
-    <button id="exportExcelBtn" class="export-btn">📥 Excel (CSV) Yüklə</button>
-</div>
+            <div class="tools-container" style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+                <input type="text" id="searchInput" class="search-box" style="flex: 1; min-width: 200px; padding: 12px; background-color: #0d1117; border: 1px solid #30363d; border-radius: 6px; color: #c9d1d9;" placeholder="Tələbənin adını axtar...">
+                <button id="exportExcelBtn" class="export-btn" style="background-color: #238636; color: #ffffff; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold;">📥 Excel (CSV) Yüklə</button>
+            </div>
+
             <div style="overflow-x: visible;">
                 <div class="leaderboard-header rank-table-header">
                     <span style="width: 30px;">#</span>
@@ -135,55 +114,32 @@
                 <label style="font-size: 13px; color: #8b949e; margin-top: 5px;">Redaktə Ediləcək Həftə:</label>
                 <input type="number" id="editWeekNum" placeholder="Həftə Nömrəsi" value="1" required>
 
+                <!-- KURS SEÇİMİ PANELI (REDAKTƏ) -->
+                <div id="editCourseSelection" style="margin-top: 10px; margin-bottom: 10px; display: flex; gap: 15px; font-size: 14px;">
+                    <label style="color: #c9d1d9; cursor: pointer;"><input type="radio" name="editCourse" value="both" checked> Hər İkisi</label>
+                    <label style="color: #c9d1d9; cursor: pointer;"><input type="radio" name="editCourse" value="cpp"> Yalnız C++</label>
+                    <label style="color: #c9d1d9; cursor: pointer;"><input type="radio" name="editCourse" value="python"> Yalnız Python</label>
+                </div>
+
                 <div id="editCppGroup" style="border: 1px solid #30363d; padding: 10px; border-radius: 6px; margin-top: 5px;">
                     <h5 style="color: #2ea44f; margin-bottom: 5px; font-size: 14px;">C++ Balları</h5>
                     <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px;">
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e;">FM</label>
-                            <input type="number" id="edit_cpp_fm" value="0">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e;">SO</label>
-                            <input type="number" id="edit_cpp_so" value="0">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e;">EO</label>
-                            <input type="number" id="edit_cpp_eo" value="0">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e;">CF</label>
-                            <input type="number" id="edit_cpp_cf" value="0">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e;">HR</label>
-                            <input type="number" id="edit_cpp_hr" value="0">
-                        </div>
+                        <div><label style="font-size: 11px; color: #8b949e;">FM</label><input type="number" id="edit_cpp_fm" value="0"></div>
+                        <div><label style="font-size: 11px; color: #8b949e;">SO</label><input type="number" id="edit_cpp_so" value="0"></div>
+                        <div><label style="font-size: 11px; color: #8b949e;">EO</label><input type="number" id="edit_cpp_eo" value="0"></div>
+                        <div><label style="font-size: 11px; color: #8b949e;">CF</label><input type="number" id="edit_cpp_cf" value="0"></div>
+                        <div><label style="font-size: 11px; color: #8b949e;">HR</label><input type="number" id="edit_cpp_hr" value="0"></div>
                     </div>
                 </div>
 
                 <div id="editPyGroup" style="border: 1px solid #30363d; padding: 10px; border-radius: 6px; margin-top: 5px;">
                     <h5 style="color: #2ea44f; margin-bottom: 5px; font-size: 14px;">Python Balları</h5>
                     <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px;">
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e;">FM</label>
-                            <input type="number" id="edit_py_fm" value="0">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e;">SO</label>
-                            <input type="number" id="edit_py_so" value="0">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e;">EO</label>
-                            <input type="number" id="edit_py_eo" value="0">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e;">CF</label>
-                            <input type="number" id="edit_py_cf" value="0">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #8b949e;">HR</label>
-                            <input type="number" id="edit_py_hr" value="0">
-                        </div>
+                        <div><label style="font-size: 11px; color: #8b949e;">FM</label><input type="number" id="edit_py_fm" value="0"></div>
+                        <div><label style="font-size: 11px; color: #8b949e;">SO</label><input type="number" id="edit_py_so" value="0"></div>
+                        <div><label style="font-size: 11px; color: #8b949e;">EO</label><input type="number" id="edit_py_eo" value="0"></div>
+                        <div><label style="font-size: 11px; color: #8b949e;">CF</label><input type="number" id="edit_py_cf" value="0"></div>
+                        <div><label style="font-size: 11px; color: #8b949e;">HR</label><input type="number" id="edit_py_hr" value="0"></div>
                     </div>
                 </div>
 
