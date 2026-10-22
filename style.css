@@ -5,58 +5,69 @@ header { background-color: #161b22; padding: 15px 25px; display: flex; justify-c
 .logo { font-size: 22px; font-weight: bold; color: #2ea44f; }
 
 .header-controls { display: flex; align-items: center; gap: 12px; }
-
 .lang-dropdown { background-color: #0d1117; color: #e6edf3; border: 1px solid #30363d; padding: 6px 10px; border-radius: 6px; font-size: 13px; cursor: pointer; }
 .dict-btn { background-color: #21262d; color: #e6edf3; border: 1px solid #30363d; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; }
-.dict-btn:hover { background-color: #30363d; }
 
-/* Hamburger Menu */
 .hamburger { display: flex; flex-direction: column; gap: 4px; cursor: pointer; padding: 5px; }
-.hamburger span { width: 22px; height: 3px; background-color: #2ea44f; border-radius: 2px; transition: 0.3s; }
+.hamburger span { width: 22px; height: 3px; background-color: #2ea44f; border-radius: 2px; }
 
 .nav-drawer { display: none; position: absolute; top: 100%; right: 20px; background-color: #161b22; border: 1px solid #30363d; border-radius: 8px; flex-direction: column; padding: 10px; gap: 8px; z-index: 100; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
 .nav-drawer.active { display: flex; }
 .nav-drawer a, .nav-btn-link { color: #8b949e; text-decoration: none; padding: 8px 16px; border-radius: 6px; border: 1px solid #30363d; font-weight: 600; font-size: 13px; text-align: center; background: transparent; cursor: pointer; }
-.nav-drawer a:hover, .nav-drawer a.active, .nav-btn-link:hover { background-color: #238636; color: #ffffff; border-color: #2ea44f; }
+.nav-drawer a:hover, .nav-drawer a.active { background-color: #238636; color: #ffffff; border-color: #2ea44f; }
 .admin-link { border-color: #2ea44f !important; color: #2ea44f !important; }
 
-main { flex: 1; padding: 20px; margin: auto; width: 100%; max-width: 900px; }
+main { flex: 1; padding: 20px; margin: auto; width: 100%; max-width: 980px; }
 
-/* Hero Bölməsi */
-.hero-section { text-align: center; margin: 25px 0; }
-.group-title { font-size: 38px; color: #2ea44f; font-weight: 900; letter-spacing: 2px; margin-bottom: 2px; }
-.main-title { font-size: 22px; color: #ffffff; letter-spacing: 1px; font-weight: 700; text-transform: uppercase; background: linear-gradient(90deg, #2ea44f, #58a6ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.instructor-sub { color: #8b949e; font-size: 15px; margin-top: 6px; }
-.motto-text { font-size: 16px; font-weight: bold; color: #2ea44f; margin-top: 8px; letter-spacing: 1.5px; }
-
-/* Grid */
-.info-grid-modal { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: #c9d1d9; }
-
-.card { background-color: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 15px; }
-.loser-card { border: 1px solid #da3633; background-color: #160d0e; }
+.card { background-color: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 15px; position: relative; }
 h2 { color: #2ea44f; margin-bottom: 10px; font-size: 18px; }
 
 .leaderboard-header { display: flex; justify-content: space-between; padding: 10px; color: #8b949e; font-weight: bold; border-bottom: 1px solid #30363d; font-size: 13px; }
-#commonList, #loserList { list-style: none; }
+.rank-table-header { display: grid; grid-template-columns: 30px minmax(130px, 1.5fr) repeat(8, 1fr); text-align: center; gap: 4px; }
 
-li.student-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 10px; background-color: #0d1117; margin-top: 8px; border-radius: 6px; border-left: 4px solid #238636; cursor: pointer; transition: 0.2s; font-size: 14px; }
+#commonList, #cppList, #pythonList, #adminStudentList { list-style: none; }
+
+li.student-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 10px; background-color: #0d1117; margin-top: 8px; border-radius: 6px; border-left: 4px solid #238636; cursor: pointer; transition: 0.2s; font-size: 14px; position: relative; }
 li.student-row:hover { background-color: #1f242c; }
 
-li.loser-row { border-left: 4px solid #da3633 !important; }
+/* 3 Nöqtə Və Açılan Menyu (Böyüdülmüş və Çərçivədən Kənara Çıxacaq Şəkildə) */
+.action-dropdown { position: relative; display: inline-block; }
+.action-btn { padding: 4px 12px !important; background: #21262d !important; border: 1px solid #30363d !important; border-radius: 6px; color: #e6edf3 !important; font-size: 20px !important; font-weight: bold; cursor: pointer; }
+.action-btn:hover { background-color: #30363d !important; }
 
-/* Modallar */
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
-.modal-content { background: #161b22; padding: 20px; border-radius: 8px; border: 1px solid #30363d; width: 100%; max-width: 450px; max-height: 85vh; overflow-y: auto; position: relative; }
-.dict-modal-content { max-width: 600px; }
-.close { position: absolute; right: 15px; top: 10px; font-size: 24px; cursor: pointer; color: #8b949e; }
-
-.dict-list { max-height: 350px; overflow-y: auto; }
-.dict-item { background: #0d1117; padding: 10px; border-radius: 6px; border: 1px solid #30363d; margin-bottom: 8px; }
-.dict-term { font-weight: bold; color: #2ea44f; font-size: 14px; margin-bottom: 4px; }
-.dict-trans { font-size: 12px; color: #8b949e; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-
-@media (max-width: 600px) {
-    .group-title { font-size: 30px; }
-    .main-title { font-size: 18px; }
-    .hero-section { margin: 15px 0; }
+.action-menu { 
+    position: absolute; 
+    right: 0; 
+    top: 35px; 
+    background: #161b22; 
+    border: 1px solid #238636; 
+    border-radius: 8px; 
+    z-index: 9999 !important; 
+    min-width: 150px; 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+    padding: 6px 0;
 }
+
+.action-menu button {
+    width: 100%;
+    text-align: left;
+    padding: 10px 14px;
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.action-menu button:hover {
+    background-color: #21262d;
+}
+
+form { display: flex; flex-direction: column; gap: 10px; }
+input { padding: 10px; background-color: #0d1117; border: 1px solid #30363d; border-radius: 6px; color: #ffffff; font-size: 14px; }
+button { padding: 12px; background-color: #238636; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+.logout-btn { background-color: #da3633; margin-top: 15px; width: 100%; }
+.hidden { display: none !important; }
+
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
+.modal-content { background: #161b22; padding: 20px; border-radius: 8px; border: 1px solid #30363d; width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto; position: relative; }
+.close { position: absolute; right: 15px; top: 10px; font-size: 24px; cursor: pointer; color: #8b949e; }
