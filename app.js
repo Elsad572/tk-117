@@ -112,7 +112,7 @@ loadLeaderboard('common', 'commonList');
 loadLeaderboard('cpp', 'cppList');
 loadLeaderboard('python', 'pythonList');
 
-// Admin İcazələri
+// Admin Kullanıcı Yetkileri ve Şifreleri
 const ADMINS = {
     "Elsad": "elsad_29822",
     "Aytac": "aytac_35723"
@@ -159,13 +159,13 @@ function checkAuth() {
         
         if (currentUser === 'Aytac') {
             if (cppInput) {
-                cppInput.style.display = 'none'; // C++ bal əlavə etmə yeri tamamilə gizlədilir
+                cppInput.style.display = 'none'; // Aytac için C++ alanını tamamen gizle
                 cppInput.value = 0;
             }
             if (deleteBtnText) deleteBtnText.textContent = "Tələbənin Yalnız Python Balını Sil";
         } else {
             if (cppInput) {
-                cppInput.style.display = 'block'; // Elsad daxil olduqda C++ sahəsi görünür
+                cppInput.style.display = 'block'; // Elsad için C++ alanını göster
             }
             if (deleteBtnText) deleteBtnText.textContent = "Tələbəni Tamamilə Sil";
         }
@@ -174,6 +174,8 @@ function checkAuth() {
         adminPanel.classList.add('hidden');
     }
 }
+
+// Süratli Kontrol
 checkAuth();
 
 // Bal Əlavə etmək
@@ -210,7 +212,6 @@ if (addStudentForm) {
             studentData.lastPython = python;
         }
 
-        // Ümumi balı hesablamaq
         let tCpp = 0, tPy = 0;
         Object.values(studentData.weeks).forEach(w => {
             tCpp += (w.cpp || 0);
