@@ -119,3 +119,21 @@ button { padding: 12px; background-color: #238636; color: white; border: none; b
         grid-template-columns: repeat(5, 1fr) !important;
     }
 }
+/* Mobil Derleyiciler (C++ ve Python) İçin Tam Ekran Genişliği Düzeltmesi */
+@media (max-width: 600px) {
+    main {
+        padding: 5px !important;
+    }
+    .card {
+        padding: 10px 5px !important;
+    }
+    .card h2 {
+        padding-left: 10px;
+    }
+    iframe {
+        width: 100% !important;
+        height: 80vh !important; /* Ekranın %80'ini kaplar */
+        min-height: 550px !important;
+        border-radius: 4px !important;
+    }
+}
