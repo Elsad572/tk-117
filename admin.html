@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TT-08 | Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">⚡ TT-08</div>
+        <nav>
+            <a href="index.html">Common</a>
+            <a href="cpp.html">C++ Compiler</a>
+            <a href="python.html">Python Compiler</a>
+            <a href="admin.html" class="active admin-link">Admin Panel</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Giriş Formu -->
+        <div id="loginSection" class="card">
+            <h2>Admin Girişi</h2>
+            <form id="loginForm">
+                <input type="email" id="adminEmail" placeholder="Email" required>
+                <input type="password" id="adminPassword" placeholder="Şifrə" required>
+                <button type="submit">Daxil ol</button>
+            </form>
+        </div>
+
+        <!-- İdarəetmə Paneli (Giriş etdikdən sonra görünür) -->
+        <div id="adminPanel" class="card hidden">
+            <h2>Tələbə Məlumatı Əlavə Et / Yenilə</h2>
+            <form id="addStudentForm">
+                <input type="text" id="studentName" placeholder="Tələbənin Adı və Soyadı" required>
+                <input type="number" id="studentPoints" placeholder="Xal" required>
+                <button type="submit">Yadda saxla</button>
+            </form>
+            <button id="logoutBtn" class="logout-btn">Çıxış Et</button>
+        </div>
+    </main>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
