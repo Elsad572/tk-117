@@ -55,7 +55,7 @@ if (loginForm) {
 
         signInWithEmailAndPassword(auth, email, password)
             .then(() => {
-                alert("Giriş başarılı!");
+                alert("Giriş doğrulandı!");
             })
             .catch(error => alert("Hata: " + error.message));
     });
@@ -64,7 +64,7 @@ if (loginForm) {
 // Admin Çıkışı Yapma
 if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
-        signOut(auth).then(() => alert("Çıkış yapıldı."));
+        signOut(auth).then(() => alert("Çıxış edildi."));
     });
 }
 
@@ -94,9 +94,9 @@ if (addStudentForm) {
                 points: points
             });
             addStudentForm.reset();
-            alert("Öğrenci başarıyla eklendi!");
+            alert("İstifadeçi daxil edildi!");
         } catch (e) {
-            alert("Hata oluştu: " + e.message);
+            alert("Xeta baş verdi: " + e.message);
         }
     });
 }
