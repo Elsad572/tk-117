@@ -194,6 +194,27 @@ function loadCommonLeaderboard() {
         });
 
         students.sort((a,b) => b.score - a.score);
+
+        // Qızılı Top 3 Render
+        const topThreeEl = document.getElementById('topThreeContainer');
+        if (topThreeEl) {
+            topThreeEl.innerHTML = '';
+            const top3 = students.slice(0, 3);
+            const medals = ['👑 1-ci Yer', '🥈 2-ci Yer', '🥉 3-cü Yer'];
+            
+            top3.forEach((st, idx) => {
+                const card = document.createElement('div');
+                card.className = 'gold-card';
+                card.innerHTML = `
+                    <div class="gold-rank">${medals[idx]}</div>
+                    <div class="gold-name">${st.name}</div>
+                    <div class="gold-score">${st.score} pt</div>
+                `;
+                card.onclick = () => openStudentModal(st.name, st.data);
+                topThreeEl.appendChild(card);
+            });
+        }
+
         const totalStudents = students.length;
         const mainStudents = students.slice(0, Math.max(0, totalStudents - 3));
         const loserStudents = students.slice(Math.max(0, totalStudents - 3));
@@ -259,6 +280,26 @@ function loadLanguageLeaderboard(langType, elementId) {
 
         students.sort((a,b) => b.cari - a.cari);
 
+        // Qızılı Top 3 Render
+        const topThreeEl = document.getElementById('topThreeContainer');
+        if (topThreeEl) {
+            topThreeEl.innerHTML = '';
+            const top3 = students.slice(0, 3);
+            const medals = ['👑 1-ci Yer', '🥈 2-ci Yer', '🥉 3-cü Yer'];
+
+            top3.forEach((st, idx) => {
+                const card = document.createElement('div');
+                card.className = 'gold-card';
+                card.innerHTML = `
+                    <div class="gold-rank">${medals[idx]}</div>
+                    <div class="gold-name">${st.name}</div>
+                    <div class="gold-score">${st.cari} pt</div>
+                `;
+                card.onclick = () => openStudentModal(st.name, st.data);
+                topThreeEl.appendChild(card);
+            });
+        }
+
         let rank = 1;
         students.forEach(st => {
             const li = document.createElement('li');
@@ -277,7 +318,7 @@ function loadLanguageLeaderboard(langType, elementId) {
 loadLanguageLeaderboard('cpp', 'cppList');
 loadLanguageLeaderboard('python', 'pythonList');
 
-// 8. ADMIN GİRİŞ VƏ İDARƏETMƏ (HƏRFƏ HƏSSASLIQ LƏĞV EDİLDİ)
+// 8. ADMIN GİRİŞ VƏ İDARƏETMƏ
 const ADMINS = { "elsad": "elsad_29822", "aytac": "aytac_35723" };
 const loginForm = document.getElementById('loginForm');
 const loginSection = document.getElementById('loginSection');
@@ -421,7 +462,7 @@ document.addEventListener('click', () => {
     document.querySelectorAll('.action-menu').forEach(m => m.classList.add('hidden'));
 });
 
-// 10. ADMIN REDAKTƏ VƏ ƏLAVƏ ETMƏ FORMULARI
+// 10. ADMIN REDAKTƏ VƏ ƏLAVƏ ETMƏ FORMULARI (HƏFTƏ / BAL MƏCBURİ DEYİL)
 const closeEditModal = document.getElementById('closeEditModal');
 if (closeEditModal) closeEditModal.onclick = () => document.getElementById('editModal').style.display = 'none';
 
@@ -502,7 +543,9 @@ if (addStudentForm) {
         e.preventDefault();
         const currentUser = localStorage.getItem('adminUser');
         const name = document.getElementById('studentName').value.trim();
-        const week = document.getElementById('weekNum').value;
+        const weekInput = document.getElementById('weekNum').value.trim();
+
+        if (!name) return;
 
         const docRef = doc(db, "students", name);
         const docSnap = await getDoc(docRef);
@@ -513,25 +556,36 @@ if (addStudentForm) {
             if (!studentData.weeks) studentData.weeks = {};
         }
 
-        if (!studentData.weeks[week]) studentData.weeks[week] = {};
+        if (weekInput !== "") {
+            const week = weekInput;
+            if (!studentData.weeks[week]) studentData.weeks[week] = {};
 
-        studentData.weeks[week].py_fm = Number(document.getElementById('py_fm').value) || 0;
-        studentData.weeks[week].py_so = Number(document.getElementById('py_so').value) || 0;
-        studentData.weeks[week].py_eo = Number(document.getElementById('py_eo').value) || 0;
-        studentData.weeks[week].py_cf = Number(document.getElementById('py_cf').value) || 0;
-        studentData.weeks[week].py_hr = Number(document.getElementById('py_hr').value) || 0;
+            studentData.weeks[week].py_fm = Number(document.getElementById('py_fm').value) || 0;
+            studentData.weeks[week].py_so = Number(document.getElementById('py_so').value) || 0;
+            studentData.weeks[week].py_eo = Number(document.getElementById('py_eo').value) || 0;
+            studentData.weeks[week].py_cf = Number(document.getElementById('py_cf').value) || 0;
+            studentData.weeks[week].py_hr = Number(document.getElementById('py_hr').value) || 0;
 
-        if (currentUser !== 'aytac') {
-            studentData.weeks[week].cpp_fm = Number(document.getElementById('cpp_fm').value) || 0;
-            studentData.weeks[week].cpp_so = Number(document.getElementById('cpp_so').value) || 0;
-            studentData.weeks[week].cpp_eo = Number(document.getElementById('cpp_eo').value) || 0;
-            studentData.weeks[week].cpp_cf = Number(document.getElementById('cpp_cf').value) || 0;
-            studentData.weeks[week].cpp_hr = Number(document.getElementById('cpp_hr').value) || 0;
+            if (currentUser !== 'aytac') {
+                studentData.weeks[week].cpp_fm = Number(document.getElementById('cpp_fm').value) || 0;
+                studentData.weeks[week].cpp_so = Number(document.getElementById('cpp_so').value) || 0;
+                studentData.weeks[week].cpp_eo = Number(document.getElementById('cpp_eo').value) || 0;
+                studentData.weeks[week].cpp_cf = Number(document.getElementById('cpp_cf').value) || 0;
+                studentData.weeks[week].cpp_hr = Number(document.getElementById('cpp_hr').value) || 0;
+            }
         }
 
-        await setDoc(docRef, studentData);
-        addStudentForm.reset();
-        checkAuth();
-        alert(`${week}-ci həftə üçün ballar saxlanıldı!`);
+        try {
+            await setDoc(docRef, studentData);
+            addStudentForm.reset();
+            checkAuth();
+            if (weekInput !== "") {
+                alert(`${name} üçün ${weekInput}-ci həftə balları saxlanıldı!`);
+            } else {
+                alert(`${name} uğurla siyahıya əlavə edildi!`);
+            }
+        } catch (err) {
+            alert("Xəta: " + err.message);
+        }
     });
 }
