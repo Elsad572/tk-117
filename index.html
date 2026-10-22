@@ -3,13 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TK-117 | Common</title>
+    <title>TK-117 | Proqramlaşdırma Texnologiyaları</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <div class="logo">⚡ TK-117</div>
-        <nav>
+        
+        <div class="header-controls">
+            <!-- Dil Seçimi -->
+            <select id="langSelect" class="lang-dropdown">
+                <option value="az">🇦🇿 AZ</option>
+                <option value="tr">🇹🇷 TR</option>
+                <option value="en">🇬🇧 EN</option>
+                <option value="ru">🇷🇺 RU</option>
+            </select>
+
+            <!-- IT Lüğəti Düyməsi -->
+            <button id="dictionaryBtn" class="dict-btn">📖 <span data-i18n="dict">IT Lüğəti</span></button>
+
+            <!-- Üç Xətt Menyusu -->
+            <div class="hamburger" id="hamburgerBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <!-- Açılan Menyu -->
+        <nav id="navMenu" class="nav-drawer">
             <a href="cpp-rank.html">C++</a>
             <a href="python-rank.html">Python</a>
             <a href="index.html" class="active">Common</a>
@@ -19,24 +41,55 @@
         </nav>
     </header>
 
-    <main style="max-width: 900px;">
-        <div class="card">
-            <h2>Ümumi Reytinq Siyahısı</h2>
-            <p style="color: #8b949e; margin-bottom: 15px; font-size: 14px;">Həftəlik balları və keçmiş reytinqi görmək üçün tələbə adının üstünə klikləyin.</p>
+    <main>
+        <!-- Başlıq Və Tədris Məlumatı -->
+        <section class="hero-section">
+            <h1 class="main-title">PROQRAMLAŞDIRMA TEXNOLOGİYALARI</h1>
+            <p class="instructor-sub"><span data-i18n="teaches">Tədris edir:</span> <strong>Qurbanov Fuad</strong></p>
+        </section>
+
+        <!-- Tələbə / Haqqında Kartı -->
+        <div class="info-card">
+            <h3>ℹ️ <span data-i18n="infoTitle">Məfhum və Təşkilat Məlumatları</span></h3>
+            <div class="info-grid">
+                <div><strong><span data-i18n="creator">Yaradıcı:</span></strong> Elşad Dəmirov</div>
+                <div><strong><span data-i18n="uni">Universitet:</span></strong> Bakı Dövlət Universiteti</div>
+                <div><strong><span data-i18n="faculty">Fakültə:</span></strong> Tətbiqi riyaziyyat və kibernetika</div>
+                <div><strong><span data-i18n="specialty">İxtisas:</span></strong> Kompüter Elmləri</div>
+            </div>
+        </div>
+
+        <!-- Reytinq Siyahısı -->
+        <div class="card" style="margin-top: 20px;">
+            <h2 data-i18n="leaderboard">Ümumi Reytinq Siyahısı</h2>
+            <p style="color: #8b949e; margin-bottom: 15px; font-size: 13px;" data-i18n="clickInfo">
+                Həftəlik balları görmək üçün tələbə adının üstünə klikləyin.
+            </p>
             <div class="leaderboard-header">
                 <span>#</span>
-                <span>Ad Soyad</span>
-                <span>Ümumi Bal</span>
+                <span data-i18n="nameHeader">Ad Soyad</span>
+                <span data-i18n="scoreHeader">Ümumi Bal</span>
             </div>
             <ul id="commonList"></ul>
         </div>
     </main>
 
+    <!-- Həftəlik Bal Modalı -->
     <div id="historyModal" class="modal">
         <div class="modal-content">
             <span class="close" id="closeModal">&times;</span>
             <h3 id="modalStudentName" style="color: #2ea44f; margin-bottom: 15px;"></h3>
             <div id="modalDetails"></div>
+        </div>
+    </div>
+
+    <!-- IT Lüğəti Modalı -->
+    <div id="dictModal" class="modal">
+        <div class="modal-content dict-modal-content">
+            <span class="close" id="closeDictModal">&times;</span>
+            <h3 style="color: #2ea44f; margin-bottom: 10px;">📖 IT Lüğəti (4 Dil)</h3>
+            <input type="text" id="dictSearch" placeholder="Termin axtar... (Search term...)" style="margin-bottom: 15px; width: 100%;">
+            <div id="dictList" class="dict-list"></div>
         </div>
     </div>
 
