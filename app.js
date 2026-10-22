@@ -135,7 +135,7 @@ function openStudentModal(name, data) {
     modal.style.display = 'flex';
 }
 
-// 6. COMMON REYTİNQ (AZƏRBAYCAN ƏLİFBASI İLƏ DƏQİQ SIRALAMA)
+// 6. COMMON REYTİNQ (İNTELLEKTUALLAR QIZILI PODİUM & LOSERS)
 function loadCommonLeaderboard() {
     const listEl = document.getElementById('commonList');
     const loserEl = document.getElementById('loserList');
@@ -166,6 +166,7 @@ function loadCommonLeaderboard() {
             students.push({ name: data.name || docSnap.id, score: totalScore, lastCpp, lastPy, data });
         });
 
+        // Xala görə böyükdən kiçiyə, xal bərabərdirsə Azərbaycan əlifbası ilə sıralama
         students.sort((a, b) => {
             if (b.score !== a.score) {
                 return b.score - a.score;
@@ -173,6 +174,7 @@ function loadCommonLeaderboard() {
             return azSortNames(a.name, b.name);
         });
 
+        // Qızılı "İNTELLEKTUALLAR" Top 3 Render
         const topThreeEl = document.getElementById('topThreeContainer');
         if (topThreeEl) {
             topThreeEl.innerHTML = '';
@@ -211,7 +213,12 @@ function loadCommonLeaderboard() {
             loserStudents.forEach(st => {
                 const li = document.createElement('li');
                 li.className = 'student-row loser-row';
-                li.innerHTML = `<span>${loserRank}</span><span>${st.name}</span><span>C++: ${st.lastCpp} | Py: ${st.lastPy}</span><span><strong>${st.score} pt</strong></span>`;
+                li.innerHTML = `
+                    <span>${loserRank}</span>
+                    <span>${st.name} <span class="loser-badge">Loser</span></span>
+                    <span>C++: ${st.lastCpp} | Py: ${st.lastPy}</span>
+                    <span><strong>${st.score} pt</strong></span>
+                `;
                 li.onclick = () => openStudentModal(st.name, st.data);
                 loserEl.appendChild(li);
                 loserRank++;
@@ -221,7 +228,7 @@ function loadCommonLeaderboard() {
 }
 loadCommonLeaderboard();
 
-// 7. C++ VƏ PYTHON REYTİNQ (AZƏRBAYCAN ƏLİFBASI İLƏ DƏQİQ SIRALAMA)
+// 7. C++ VƏ PYTHON REYTİNQ YÜKLƏMƏ
 function loadLanguageLeaderboard(langType, elementId) {
     const listEl = document.getElementById(elementId);
     if (!listEl) return;
@@ -455,7 +462,7 @@ document.addEventListener('click', () => {
     document.querySelectorAll('.action-menu').forEach(m => m.classList.add('hidden'));
 });
 
-// 10. ADMIN REDAKTƏ VƏ ƏLAVƏ ETMƏ FORMULARI
+// 10. ADMIN REDAKTƏ VƏ ƏLAVƏ ETMƏ FORMULARI (HƏFTƏ/BAL MƏCBURİ DEYİL)
 const closeEditModal = document.getElementById('closeEditModal');
 if (closeEditModal) closeEditModal.onclick = () => document.getElementById('editModal').style.display = 'none';
 
