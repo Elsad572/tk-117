@@ -87,3 +87,35 @@ button { padding: 12px; background-color: #238636; color: white; border: none; b
     .instructor-sub { font-size: 15px; }
     .motto-text { font-size: 15px; }
 }
+/* Mobil Admin Paneli Kutularının Dışarı Taşmasını Önleme */
+.card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+#cppCategoryGroup > div,
+#pythonCategoryGroup > div,
+#editCppGroup > div,
+#editPyGroup > div {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+}
+
+#cppCategoryGroup input,
+#pythonCategoryGroup input,
+#editCppGroup input,
+#editPyGroup input {
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+@media (min-width: 500px) {
+    #cppCategoryGroup > div,
+    #pythonCategoryGroup > div,
+    #editCppGroup > div,
+    #editPyGroup > div {
+        grid-template-columns: repeat(5, 1fr) !important;
+    }
+}
