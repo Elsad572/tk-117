@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
-import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAu-k4uvpjsHitiKwhbE3D_HKJ_Sxt-l9A",
@@ -149,7 +149,6 @@ if (addStudentForm) {
 
         studentData.weeks[week] = { cpp: cpp, python: python };
 
-        // Ümumi balları hesablamaq
         let tCpp = 0, tPy = 0;
         Object.values(studentData.weeks).forEach(w => {
             tCpp += (w.cpp || 0);
@@ -165,6 +164,25 @@ if (addStudentForm) {
             alert(`${week}-ci həftə balı uğurla əlavə olundu!`);
         } catch (err) {
             alert("Xəta: " + err.message);
+        }
+    });
+}
+
+// Tələbəni tamamilə silmək funksiyası
+const deleteStudentForm = document.getElementById('deleteStudentForm');
+if (deleteStudentForm) {
+    deleteStudentForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('deleteStudentName').value.trim();
+
+        if (confirm(`${name} adlı tələbəni cədvəldən silməyə əminsiniz?`)) {
+            try {
+                await deleteDoc(doc(db, "students", name));
+                deleteStudentForm.reset();
+                alert(`${name} uğurla silindi!`);
+            } catch (err) {
+                alert("Xəta: " + err.message);
+            }
         }
     });
 }
