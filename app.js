@@ -25,6 +25,18 @@ if (hamburgerBtn && navMenu) {
     document.addEventListener('click', () => navMenu.classList.remove('active'));
 }
 
+// Məlumat Modalı Məntiqi
+const infoTabBtn = document.getElementById('infoTabBtn');
+const infoModal = document.getElementById('infoModal');
+const closeInfoModal = document.getElementById('closeInfoModal');
+
+if (infoTabBtn && infoModal) {
+    infoTabBtn.onclick = () => { infoModal.style.display = 'flex'; };
+}
+if (closeInfoModal && infoModal) {
+    closeInfoModal.onclick = () => { infoModal.style.display = 'none'; };
+}
+
 // IT Lüğəti Məlumatları
 const IT_DICTIONARY = [
     { term: "Algorithm", az: "Alqoritm", tr: "Algoritma", ru: "Алгоритм" },
@@ -77,10 +89,10 @@ if (dictSearch) dictSearch.oninput = (e) => renderDict(e.target.value);
 
 // Dil Seçimi Və İNTERFEYS TƏRCÜMƏSİ
 const TRANSLATIONS = {
-    az: { dict: "IT Lüğəti", teaches: "Tədris edir:", infoTitle: "Məfhum və Təşkilat Məlumatları", creator: "Yaradıcı:", uni: "Universitet:", faculty: "Fakültə:", specialty: "İxtisas:", leaderboard: "Ümumi Reytinq Siyahısı", clickInfo: "Həftəlik balları görmək üçün tələbə adının üstünə klikləyin.", nameHeader: "Ad Soyad", scoreHeader: "Ümumi Bal" },
-    tr: { dict: "BT Sözlüğü", teaches: "Eğitmen:", infoTitle: "Bilgi ve Organizasyon", creator: "Geliştirici:", uni: "Üniversite:", faculty: "Fakülte:", specialty: "Bölüm:", leaderboard: "Genel Sıralama Listesi", clickInfo: "Haftalık puanları görmek için öğrenci adına tıklayın.", nameHeader: "Ad Soyad", scoreHeader: "Toplam Puan" },
-    en: { dict: "IT Dictionary", teaches: "Instructor:", infoTitle: "Info & Organization", creator: "Creator:", uni: "University:", faculty: "Faculty:", specialty: "Specialty:", leaderboard: "Overall Leaderboard", clickInfo: "Click on a student's name to view weekly scores.", nameHeader: "Full Name", scoreHeader: "Total Score" },
-    ru: { dict: "IT Словарь", teaches: "Преподаватель:", infoTitle: "Информация и Организация", creator: "Создатель:", uni: "Университет:", faculty: "Факультет:", specialty: "Специальность:", leaderboard: "Общий Рейтинг", clickInfo: "Нажмите на имя студента, чтобы увидеть еженедельные баллы.", nameHeader: "Имя Фамилия", scoreHeader: "Общий Балл" }
+    az: { dict: "IT Lüğəti", infoTab: "Məlumat", teaches: "Tədris edir:", infoTitle: "Məfhum və Təşkilat Məlumatları", creator: "Yaradıcı:", uni: "Universitet:", faculty: "Fakültə:", specialty: "İxtisas:", leaderboard: "Ümumi Reytinq Siyahısı", clickInfo: "Həftəlik balları görmək üçün tələbə adının üstünə klikləyin.", nameHeader: "Ad Soyad", scoreHeader: "Ümumi Bal" },
+    tr: { dict: "BT Sözlüğü", infoTab: "Bilgi", teaches: "Eğitmen:", infoTitle: "Bilgi ve Organizasyon", creator: "Geliştirici:", uni: "Üniversite:", faculty: "Fakülte:", specialty: "Bölüm:", leaderboard: "Genel Sıralama Listesi", clickInfo: "Haftalık puanları görmek için öğrenci adına tıklayın.", nameHeader: "Ad Soyad", scoreHeader: "Toplam Puan" },
+    en: { dict: "IT Dictionary", infoTab: "Info", teaches: "Instructor:", infoTitle: "Info & Organization", creator: "Creator:", uni: "University:", faculty: "Faculty:", specialty: "Specialty:", leaderboard: "Overall Leaderboard", clickInfo: "Click on a student's name to view weekly scores.", nameHeader: "Full Name", scoreHeader: "Total Score" },
+    ru: { dict: "IT Словарь", infoTab: "Информация", teaches: "Преподаватель:", infoTitle: "Информация и Организация", creator: "Создатель:", uni: "Университет:", faculty: "Факультет:", specialty: "Специальность:", leaderboard: "Общий Рейтинг", clickInfo: "Нажмите на имя студента, чтобы увидеть еженедельные баллы.", nameHeader: "Имя Фамилия", scoreHeader: "Общий Балл" }
 };
 
 const langSelect = document.getElementById('langSelect');
