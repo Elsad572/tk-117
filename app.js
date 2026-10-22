@@ -629,3 +629,55 @@ if (addStudentForm) {
         }
     });
 }
+// 11. TƏLƏBƏ AXTARIŞI (FİLTRLƏMƏ)
+const searchInput = document.getElementById('searchInput');
+if (searchInput) {
+    searchInput.addEventListener('input', function() {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll('.student-row');
+        
+        rows.forEach(row => {
+            // Sətrin içindəki mətni oxuyur (Ad və ya bala görə axtarış edir)
+            let text = row.textContent.toLowerCase();
+            if (text.includes(filter)) {
+                row.style.display = ""; 
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+}
+
+// 12. EXCEL (CSV) KİMİ YÜKLƏMƏ (Admin Panel üçün)
+const exportExcelBtn = document.getElementById('exportExcelBtn');
+if (exportExcelBtn) {
+    exportExcelBtn.addEventListener('click', () => {
+        // Excel-in Azərbaycan hərflərini (Ə, Ç, Ş, Ğ, Ö, Ü) tanıması üçün \uFEFF əlavə edirik
+        let csv = "\uFEFFSıra,Ad Soyad,C++ Balı,Python Balı\n"; 
+        let rows = document.querySelectorAll('#adminStudentList .student-row');
+        
+        rows.forEach(row => {
+            // Yalnız ekranda görünən (axtarışdan keçmiş) tələbələri yükləyir
+            if (row.style.display !== "none") {
+                let rank = row.querySelector('span:nth-child(1)').innerText.trim();
+                let name = row.querySelector('span:nth-child(2)').innerText.trim();
+                let cpp = row.querySelector('span:nth-child(3)').innerText.replace(' pt', '').trim();
+                let py = row.querySelector('span:nth-child(4)').innerText.replace(' pt', '').trim();
+                
+                // Məlumatları CSV formatında birləşdirir
+                csv += `${rank},${name},${cpp},${py}\n`;
+            }
+        });
+
+        // Faylı yaratmaq və avtomatik yüklətmək
+        let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        let link = document.createElement("a");
+        let url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", "TK-117_Reytinq.csv"); // Faylın adı
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+}
