@@ -154,19 +154,19 @@ function checkAuth() {
         loginSection.classList.add('hidden');
         adminPanel.classList.remove('hidden');
 
-        // Rol məhdudiyyətləri
         const cppInput = document.getElementById('cppPoints');
         const deleteBtnText = document.getElementById('deleteBtnText');
         
         if (currentUser === 'Aytac') {
             if (cppInput) {
+                cppInput.style.display = 'none'; // C++ bal əlavə etmə yeri tamamilə gizlədilir
                 cppInput.value = 0;
-                cppInput.disabled = true;
-                cppInput.placeholder = "C++ Balı (Məhdudlaşdırılıb)";
             }
             if (deleteBtnText) deleteBtnText.textContent = "Tələbənin Yalnız Python Balını Sil";
         } else {
-            if (cppInput) cppInput.disabled = false;
+            if (cppInput) {
+                cppInput.style.display = 'block'; // Elsad daxil olduqda C++ sahəsi görünür
+            }
             if (deleteBtnText) deleteBtnText.textContent = "Tələbəni Tamamilə Sil";
         }
     } else {
@@ -202,14 +202,13 @@ if (addStudentForm) {
 
         if (currentUser === 'Aytac') {
             studentData.weeks[week].python = python;
+            studentData.lastPython = python;
         } else {
             studentData.weeks[week].cpp = cpp;
             studentData.weeks[week].python = python;
+            studentData.lastCpp = cpp;
+            studentData.lastPython = python;
         }
-
-        // Cari (ən son qoyulan) balları saxlamaq
-        studentData.lastCpp = studentData.weeks[week].cpp;
-        studentData.lastPython = studentData.weeks[week].python;
 
         // Ümumi balı hesablamaq
         let tCpp = 0, tPy = 0;
@@ -232,7 +231,7 @@ if (addStudentForm) {
     });
 }
 
-// Silmə Funksiyası (Aytac üçün yalnız Python, Elsad üçün tam)
+// Silmə Funksiyası
 const deleteStudentForm = document.getElementById('deleteStudentForm');
 if (deleteStudentForm) {
     deleteStudentForm.addEventListener('submit', async (e) => {
