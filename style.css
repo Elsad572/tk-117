@@ -16,21 +16,21 @@ header { background-color: #161b22; padding: 15px 25px; display: flex; justify-c
 
 .nav-drawer { display: none; position: absolute; top: 100%; right: 20px; background-color: #161b22; border: 1px solid #30363d; border-radius: 8px; flex-direction: column; padding: 10px; gap: 8px; z-index: 100; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
 .nav-drawer.active { display: flex; }
-.nav-drawer a { color: #8b949e; text-decoration: none; padding: 8px 16px; border-radius: 6px; border: 1px solid #30363d; font-weight: 600; font-size: 13px; text-align: center; }
-.nav-drawer a:hover, .nav-drawer a.active { background-color: #238636; color: #ffffff; border-color: #2ea44f; }
+.nav-drawer a, .nav-btn-link { color: #8b949e; text-decoration: none; padding: 8px 16px; border-radius: 6px; border: 1px solid #30363d; font-weight: 600; font-size: 13px; text-align: center; background: transparent; cursor: pointer; }
+.nav-drawer a:hover, .nav-drawer a.active, .nav-btn-link:hover { background-color: #238636; color: #ffffff; border-color: #2ea44f; }
 .admin-link { border-color: #2ea44f !important; color: #2ea44f !important; }
 
 main { flex: 1; padding: 20px; margin: auto; width: 100%; max-width: 900px; }
 
 /* Hero Mərkəz Bölməsi */
 .hero-section { text-align: center; margin: 25px 0; }
-.main-title { font-size: 26px; color: #ffffff; letter-spacing: 1px; font-weight: 800; text-transform: uppercase; background: linear-gradient(90deg, #2ea44f, #58a6ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.group-title { font-size: 38px; color: #2ea44f; font-weight: 900; letter-spacing: 2px; margin-bottom: 2px; }
+.main-title { font-size: 22px; color: #ffffff; letter-spacing: 1px; font-weight: 700; text-transform: uppercase; background: linear-gradient(90deg, #2ea44f, #58a6ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .instructor-sub { color: #8b949e; font-size: 15px; margin-top: 6px; }
+.motto-text { font-size: 16px; font-weight: bold; color: #2ea44f; margin-top: 8px; letter-spacing: 1.5px; }
 
-/* Məlumat Kartı */
-.info-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
-.info-card h3 { font-size: 15px; color: #2ea44f; margin-bottom: 10px; border-bottom: 1px solid #21262d; padding-bottom: 5px; }
-.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 13px; color: #c9d1d9; }
+/* Məlumat Grid */
+.info-grid-modal { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: #c9d1d9; }
 
 .card { background-color: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 15px; }
 h2 { color: #2ea44f; margin-bottom: 10px; font-size: 18px; }
@@ -52,7 +52,7 @@ li.student-row:hover { background-color: #1f242c; }
 .dict-trans { font-size: 12px; color: #8b949e; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
 
 @media (max-width: 600px) {
-    .main-title { font-size: 20px; }
+    .group-title { font-size: 30px; }
+    .main-title { font-size: 18px; }
     .hero-section { margin: 15px 0; }
-    .info-grid { grid-template-columns: 1fr; }
 }
