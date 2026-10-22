@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TK-117 | Ana Sayfa</title>
+    <title>TK-117 | Common</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <div class="logo">⚡ TK-117</div>
         <nav>
+            <a href="cpp-rank.html">C++</a>
+            <a href="python-rank.html">Python</a>
             <a href="index.html" class="active">Common</a>
             <a href="cpp.html">C++ Compiler</a>
             <a href="python.html">Python Compiler</a>
@@ -17,22 +19,26 @@
         </nav>
     </header>
 
-    <main style="max-width: 1000px;">
+    <main style="max-width: 900px;">
         <div class="card">
-            <h2>Tələbə Reytinq Siyahısı</h2>
+            <h2>Ümumi Reytinq Siyahısı</h2>
+            <p style="color: #8b949e; margin-bottom: 15px; font-size: 14px;">Həftəlik balları və keçmiş reytinqi görmək üçün tələbə adının üstünə klikləyin.</p>
             <div class="leaderboard-header">
                 <span>#</span>
                 <span>Ad Soyad</span>
-                <span>C++</span>
-                <span>Python</span>
-                <span>Ümumi</span>
-                <span>Tarixçə</span>
+                <span>Ümumi Bal</span>
             </div>
-            <ul id="studentList">
-                <!-- Məlumatlar Firebase-dən dinamik yüklənəcək -->
-            </ul>
+            <ul id="commonList"></ul>
         </div>
     </main>
+
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h3 id="modalStudentName" style="color: #2ea44f; margin-bottom: 15px;"></h3>
+            <div id="modalDetails"></div>
+        </div>
+    </div>
 
     <script type="module" src="app.js"></script>
 </body>
