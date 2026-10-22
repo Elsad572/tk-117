@@ -137,4 +137,24 @@ button { padding: 12px; background-color: #238636; color: white; border: none; b
         border-radius: 4px !important;
     }
 }
+/* Sonuncu 3 yer (Losers) Qırmızı Vurğulama Stili */
+.loser-row {
+    border: 1px solid #da3633 !important;
+    background: rgba(218, 54, 51, 0.12) !important;
+    color: #ff7b72 !important;
+    font-weight: bold;
+}
 
+.loser-row span {
+    color: #ff7b72 !important;
+}
+
+.loser-badge {
+    background-color: #da3633;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+}
