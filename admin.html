@@ -30,7 +30,7 @@
         </div>
 
         <div id="adminPanel" class="card hidden">
-            <h2>Tələbəyə Həftəlik Bal Əlavə Et</h2>
+            <h2>Tələbəyə Həftəlik Bal Əlavə Et / Yenilə</h2>
             <form id="addStudentForm">
                 <input type="text" id="studentName" placeholder="Tələbənin Adı və Soyadı" required>
                 <input type="number" id="weekNum" placeholder="Həftə Nömrəsi (Məs: 1, 2, 3...)" required>
@@ -38,6 +38,15 @@
                 <input type="number" id="pythonPoints" placeholder="Python Balı" value="0" required>
                 <button type="submit">Balı Əlavə Et / Yenilə</button>
             </form>
+
+            <hr style="margin: 25px 0; border-color: #30363d;">
+
+            <h2 style="color: #da3633;">Tələbəni Siyahıdan Sil</h2>
+            <form id="deleteStudentForm">
+                <input type="text" id="deleteStudentName" placeholder="Silinəcək Tələbənin Adı və Soyadı" required>
+                <button type="submit" style="background-color: #da3633;">Tələbəni Sil</button>
+            </form>
+
             <button id="logoutBtn" class="logout-btn">Çıxış Et</button>
         </div>
     </main>
