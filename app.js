@@ -2,7 +2,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebas
 import { getFirestore, collection, onSnapshot, addDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js";
 
-// FIREBASE BAĞLANTI BİLGİLERİNİZ
 const firebaseConfig = {
   apiKey: "AIzaSyAu-k4uvpjsHitiKwhbE3D_HKJ_Sxt-l9A",
   authDomain: "tk-117-2ca94.firebaseapp.com",
@@ -13,15 +12,14 @@ const firebaseConfig = {
   measurementId: "G-LZQESYMFQF"
 };
 
-// Firebase Başlatma
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// 1. Common Sürükleyici Sayfası (Öğrenci Listesini Canlı Çekme)
 const studentList = document.getElementById('studentList');
 if (studentList) {
-    const q = query(collection(db, "students"), orderBy("points", "desc"));
+    // Ümumi xala görə çoxdan aza doğru sıralayır
+    const q = query(collection(db, "students"), orderBy("totalPoints", "desc"));
     onSnapshot(q, (snapshot) => {
         studentList.innerHTML = '';
         let rank = 1;
@@ -31,7 +29,10 @@ if (studentList) {
             li.innerHTML = `
                 <span>${rank}</span>
                 <span>${student.name}</span>
-                <span>${student.points} pt</span>
+                <span>${student.cppPoints || 0} pt</span>
+                <span>${student.pythonPoints || 0} pt</span>
+                <span><strong>${student.totalPoints || 0} pt</strong></span>
+                <span style="font-size: 12px; color: #8b949e;">${student.lastUpdated || 'Yoxdur'}</span>
             `;
             studentList.appendChild(li);
             rank++;
@@ -39,14 +40,12 @@ if (studentList) {
     });
 }
 
-// 2. Admin Paneli Giriş / Çıkış Mantığı
 const loginForm = document.getElementById('loginForm');
 const loginSection = document.getElementById('loginSection');
 const adminPanel = document.getElementById('adminPanel');
 const logoutBtn = document.getElementById('logoutBtn');
 const addStudentForm = document.getElementById('addStudentForm');
 
-// Admin Girişi Yapma
 if (loginForm) {
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -54,21 +53,17 @@ if (loginForm) {
         const password = document.getElementById('adminPassword').value;
 
         signInWithEmailAndPassword(auth, email, password)
-            .then(() => {
-                alert("Giriş doğrulandı!");
-            })
-            .catch(error => alert("Hata: " + error.message));
+            .then(() => alert("Giriş uğurludur!"))
+            .catch(error => alert("Xəta: " + error.message));
     });
 }
 
-// Admin Çıkışı Yapma
 if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
         signOut(auth).then(() => alert("Çıxış edildi."));
     });
 }
 
-// Oturum Durumunu Takip Etme (Panel Göster/Gizle)
 onAuthStateChanged(auth, (user) => {
     if (loginSection && adminPanel) {
         if (user) {
@@ -81,22 +76,30 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// Yeni Öğrenci / Puan Ekleme Formu
 if (addStudentForm) {
     addStudentForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const name = document.getElementById('studentName').value;
-        const points = Number(document.getElementById('studentPoints').value);
+        const cppPoints = Number(document.getElementById('cppPoints').value);
+        const pythonPoints = Number(document.getElementById('pythonPoints').value);
+        const totalPoints = cppPoints + pythonPoints;
+        
+        // Bu günün tarixini keçmiş reytinq qeydi üçün alırıq
+        const today = new Date();
+        const dateString = today.toLocaleDateString('az-AZ') + ' ' + today.toLocaleTimeString('az-AZ', {hour: '2-digit', minute:'2-digit'});
 
         try {
             await addDoc(collection(db, "students"), {
                 name: name,
-                points: points
+                cppPoints: cppPoints,
+                pythonPoints: pythonPoints,
+                totalPoints: totalPoints,
+                lastUpdated: dateString
             });
             addStudentForm.reset();
-            alert("İstifadeçi daxil edildi!");
+            alert("Tələbə məlumatları uğurla əlavə edildi!");
         } catch (e) {
-            alert("Xeta baş verdi: " + e.message);
+            alert("Xəta baş verdi: " + e.message);
         }
     });
 }
