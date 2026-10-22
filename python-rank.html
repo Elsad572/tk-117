@@ -9,7 +9,19 @@
 <body>
     <header>
         <div class="logo">⚡ TK-117</div>
-        <nav>
+        <div class="header-controls">
+            <select id="langSelect" class="lang-dropdown">
+                <option value="az">🇦🇿 AZ</option>
+                <option value="tr">🇹🇷 TR</option>
+                <option value="en">🇬🇧 EN</option>
+                <option value="ru">🇷🇺 RU</option>
+            </select>
+            <button id="dictionaryBtn" class="dict-btn">📖 <span data-i18n="dict">IT Lüğəti</span></button>
+            <div class="hamburger" id="hamburgerBtn">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <nav id="navMenu" class="nav-drawer">
             <a href="cpp-rank.html">C++</a>
             <a href="python-rank.html" class="active">Python</a>
             <a href="index.html">Common</a>
@@ -19,23 +31,46 @@
         </nav>
     </header>
 
-    <main style="max-width: 900px;">
-        <div class="card">
-            <h2>Python Reytinq Siyahısı</h2>
-            <div class="leaderboard-header">
-                <span>#</span>
-                <span>Ad Soyad</span>
-                <span>Python Balı</span>
+    <main>
+        <section class="hero-section">
+            <h1 class="group-title">TK-117</h1>
+            <h2 class="main-title">PYTHON REYTİNQ SİYAHISI</h2>
+            <p class="motto-text">"ÖYRƏN, GÜCLƏN, YARAT"</p>
+        </section>
+
+        <div class="card" style="margin-top: 20px; overflow-x: auto;">
+            <div class="leaderboard-header rank-table-header">
+                <span style="width: 30px;">#</span>
+                <span style="min-width: 130px;">Ad Soyad</span>
+                <span>FM</span>
+                <span>SO</span>
+                <span>EO</span>
+                <span>CF</span>
+                <span>HR</span>
+                <span>Cari</span>
+                <span>Keçmiş</span>
+                <span>Artan</span>
             </div>
             <ul id="pythonList"></ul>
         </div>
     </main>
 
+    <!-- Həftəlik Bal Modalı -->
     <div id="historyModal" class="modal">
         <div class="modal-content">
             <span class="close" id="closeModal">&times;</span>
             <h3 id="modalStudentName" style="color: #2ea44f; margin-bottom: 15px;"></h3>
             <div id="modalDetails"></div>
+        </div>
+    </div>
+
+    <!-- IT Lüğəti Modalı -->
+    <div id="dictModal" class="modal">
+        <div class="modal-content dict-modal-content">
+            <span class="close" id="closeDictModal">&times;</span>
+            <h3 style="color: #2ea44f; margin-bottom: 10px;">📖 IT Lüğəti (4 Dil)</h3>
+            <input type="text" id="dictSearch" placeholder="Termin axtar... (Search term...)" style="margin-bottom: 15px; width: 100%;">
+            <div id="dictList" class="dict-list"></div>
         </div>
     </div>
 
