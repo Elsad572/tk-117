@@ -32,10 +32,38 @@ if (hamburgerBtn && navMenu) {
 
 // 2. DİL SEÇİMİ VƏ TƏRCÜMƏ
 const TRANSLATIONS = {
-    az: { dict: "IT Lüğəti", infoTab: "Məlumat", teaches: "Tədris edir:", infoTitle: "Məfhum və Təşkilat Məlumatları", creator: "Yaradıcı:", uni: "Universitet:", faculty: "Fakültə:", specialty: "İxtisas:", leaderboard: "Ümumi Reytinq Siyahısı", clickInfo: "Həftəlik balları görmək üçün tələbə adının üstünə klikləyin.", nameHeader: "Ad Soyad", scoreHeader: "Ümumi Bal" },
-    tr: { dict: "BT Sözlüğü", infoTab: "Bilgi", teaches: "Eğitmen:", infoTitle: "Bilgi ve Organizasyon", creator: "Geliştirici:", uni: "Üniversite:", faculty: "Fakülte:", specialty: "Bölüm:", leaderboard: "Genel Sıralama Listesi", clickInfo: "Haftalık puanları görmek için öğrenci adına tıklayın.", nameHeader: "Ad Soyad", scoreHeader: "Toplam Puan" },
-    en: { dict: "IT Dictionary", infoTab: "Info", teaches: "Instructor:", infoTitle: "Info & Organization", creator: "Creator:", uni: "University:", faculty: "Faculty:", specialty: "Specialty:", leaderboard: "Overall Leaderboard", clickInfo: "Click on a student's name to view weekly scores.", nameHeader: "Full Name", scoreHeader: "Total Score" },
-    ru: { dict: "IT Словарь", infoTab: "Информация", teaches: "Преподаватель:", infoTitle: "Информация и Организация", creator: "Создатель:", uni: "Университет:", faculty: "Факультет:", specialty: "Специальность:", leaderboard: "Общий Рейтинг", clickInfo: "Нажмите на имя студента, чтобы увидеть еженедельные баллы.", nameHeader: "Имя Фамилия", scoreHeader: "Общий Балл" }
+    az: { 
+        dict: "IT Lüğəti", infoTab: "Məlumat", teaches: "Tədris edir:", infoTitle: "Məfhum və Təşkilat Məlumatları", 
+        creator: "Yaradıcı:", uni: "Universitet:", faculty: "Fakültə:", specialty: "İxtisas:", 
+        leaderboard: "Ümumi Reytinq Siyahısı", clickInfo: "Həftəlik balları görmək üçün tələbə adının üstünə klikləyin.", 
+        nameHeader: "Ad Soyad", scoreHeader: "Ümumi Bal",
+        pyTitle: "PYTHON REYTİNQ SİYAHISI", cppTitle: "C++ REYTİNQ SİYAHISI", motto: '"ÖYRƏN, GÜCLƏN, YARAT"',
+        current: "Cari", previous: "Keçmiş", increase: "Artan"
+    },
+    tr: { 
+        dict: "BT Sözlüğü", infoTab: "Bilgi", teaches: "Eğitmen:", infoTitle: "Bilgi ve Organizasyon", 
+        creator: "Geliştirici:", uni: "Üniversite:", faculty: "Fakülte:", specialty: "Bölüm:", 
+        leaderboard: "Genel Sıralama Listesi", clickInfo: "Haftalık puanları görmek için öğrenci adına tıklayın.", 
+        nameHeader: "Ad Soyad", scoreHeader: "Toplam Puan",
+        pyTitle: "PYTHON SIRALAMA LİSTESİ", cppTitle: "C++ SIRALAMA LİSTESİ", motto: '"ÖĞREN, GÜÇLEN, YARAT"',
+        current: "Mevcut", previous: "Geçmiş", increase: "Artış"
+    },
+    en: { 
+        dict: "IT Dictionary", infoTab: "Info", teaches: "Instructor:", infoTitle: "Info & Organization", 
+        creator: "Creator:", uni: "University:", faculty: "Faculty:", specialty: "Specialty:", 
+        leaderboard: "Overall Leaderboard", clickInfo: "Click on a student's name to view weekly scores.", 
+        nameHeader: "Full Name", scoreHeader: "Total Score",
+        pyTitle: "PYTHON LEADERBOARD", cppTitle: "C++ LEADERBOARD", motto: '"LEARN, EMPOWER, CREATE"',
+        current: "Current", previous: "Previous", increase: "Change"
+    },
+    ru: { 
+        dict: "IT Словарь", infoTab: "Информация", teaches: "Преподаватель:", infoTitle: "Информация и Организация", 
+        creator: "Создатель:", uni: "Университет:", faculty: "Факультет:", specialty: "Специальность:", 
+        leaderboard: "Общий Рейтинг", clickInfo: "Нажмите на имя студента, чтобы увидеть еженедельные баллы.", 
+        nameHeader: "Имя Фамилия", scoreHeader: "Общий Балл",
+        pyTitle: "РЕЙТИНГ PYTHON", cppTitle: "РЕЙТИНГ C++", motto: '"УЧИСЬ, УСИЛИВАЙСЯ, СОЗДАВАЙ"',
+        current: "Текущий", previous: "Прошлый", increase: "Изм."
+    }
 };
 const langSelect = document.getElementById('langSelect');
 if (langSelect) {
