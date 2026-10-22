@@ -1,6 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
-import { getFirestore, collection, onSnapshot, addDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAu-k4uvpjsHitiKwhbE3D_HKJ_Sxt-l9A",
@@ -14,92 +13,158 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuth(app);
 
-const studentList = document.getElementById('studentList');
-if (studentList) {
-    // Ümumi xala görə çoxdan aza doğru sıralayır
-    const q = query(collection(db, "students"), orderBy("totalPoints", "desc"));
-    onSnapshot(q, (snapshot) => {
-        studentList.innerHTML = '';
+// Modal açmaq funksiyası
+function openStudentModal(name, data) {
+    const modal = document.getElementById('historyModal');
+    const modalName = document.getElementById('modalStudentName');
+    const modalDetails = document.getElementById('modalDetails');
+    if (!modal) return;
+
+    modalName.textContent = name;
+    modalDetails.innerHTML = '';
+
+    const weeks = data.weeks || {};
+    const weekKeys = Object.keys(weeks).sort((a,b) => a - b);
+
+    if (weekKeys.length === 0) {
+        modalDetails.innerHTML = '<p style="color:#8b949e;">Məlumat yoxdur.</p>';
+    } else {
+        weekKeys.forEach(w => {
+            const item = document.createElement('div');
+            item.className = 'week-item';
+            item.innerHTML = `<strong>${w}-ci həftə:</strong> C++: ${weeks[w].cpp || 0} pt | Python: ${weeks[w].python || 0} pt`;
+            modalDetails.appendChild(item);
+        });
+    }
+    modal.style.display = 'flex';
+}
+
+const closeModal = document.getElementById('closeModal');
+if (closeModal) {
+    closeModal.onclick = () => document.getElementById('historyModal').style.display = 'none';
+}
+
+// Siyahıları yükləmək
+function loadLeaderboard(type, elementId) {
+    const listEl = document.getElementById(elementId);
+    if (!listEl) return;
+
+    onSnapshot(collection(db, "students"), (snapshot) => {
+        listEl.innerHTML = '';
+        let students = [];
+
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            let score = 0;
+            if (type === 'common') score = (data.totalCpp || 0) + (data.totalPython || 0);
+            if (type === 'cpp') score = data.totalCpp || 0;
+            if (type === 'python') score = data.totalPython || 0;
+
+            students.push({ id: doc.id, name: data.name || doc.id, score, data });
+        });
+
+        students.sort((a,b) => b.score - a.score);
+
         let rank = 1;
-        snapshot.forEach((doc) => {
-            const student = doc.data();
+        students.forEach(st => {
             const li = document.createElement('li');
-            li.innerHTML = `
-                <span>${rank}</span>
-                <span>${student.name}</span>
-                <span>${student.cppPoints || 0} pt</span>
-                <span>${student.pythonPoints || 0} pt</span>
-                <span><strong>${student.totalPoints || 0} pt</strong></span>
-                <span style="font-size: 12px; color: #8b949e;">${student.lastUpdated || 'Yoxdur'}</span>
-            `;
-            studentList.appendChild(li);
+            li.className = 'student-row';
+            li.innerHTML = `<span>${rank}</span><span>${st.name}</span><span><strong>${st.score} pt</strong></span>`;
+            li.onclick = () => openStudentModal(st.name, st.data);
+            listEl.appendChild(li);
             rank++;
         });
     });
 }
 
+loadLeaderboard('common', 'commonList');
+loadLeaderboard('cpp', 'cppList');
+loadLeaderboard('python', 'pythonList');
+
+// Admin Təyin edilmiş məlumatlar
+const ADMINS = {
+    "Elsad": "elsad_29822",
+    "Aytac": "aytac_35723"
+};
+
 const loginForm = document.getElementById('loginForm');
 const loginSection = document.getElementById('loginSection');
 const adminPanel = document.getElementById('adminPanel');
 const logoutBtn = document.getElementById('logoutBtn');
-const addStudentForm = document.getElementById('addStudentForm');
 
 if (loginForm) {
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const email = document.getElementById('adminEmail').value;
-        const password = document.getElementById('adminPassword').value;
+        const user = document.getElementById('adminUsername').value.trim();
+        const pass = document.getElementById('adminPassword').value.trim();
 
-        signInWithEmailAndPassword(auth, email, password)
-            .then(() => alert("Giriş uğurludur!"))
-            .catch(error => alert("Xəta: " + error.message));
+        if (ADMINS[user] && ADMINS[user] === pass) {
+            localStorage.setItem('adminUser', user);
+            checkAuth();
+            alert("Uğurla daxil oldunuz!");
+        } else {
+            alert("İstifadəçi adı və ya şifrə yanlışdır!");
+        }
     });
 }
 
 if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
-        signOut(auth).then(() => alert("Çıxış edildi."));
+        localStorage.removeItem('adminUser');
+        checkAuth();
     });
 }
 
-onAuthStateChanged(auth, (user) => {
-    if (loginSection && adminPanel) {
-        if (user) {
-            loginSection.classList.add('hidden');
-            adminPanel.classList.remove('hidden');
-        } else {
-            loginSection.classList.remove('hidden');
-            adminPanel.classList.add('hidden');
-        }
+function checkAuth() {
+    if (!loginSection || !adminPanel) return;
+    if (localStorage.getItem('adminUser')) {
+        loginSection.classList.add('hidden');
+        adminPanel.classList.remove('hidden');
+    } else {
+        loginSection.classList.remove('hidden');
+        adminPanel.classList.add('hidden');
     }
-});
+}
+checkAuth();
 
+// Bal əlavə etmək (Həftəlik sistem)
+const addStudentForm = document.getElementById('addStudentForm');
 if (addStudentForm) {
     addStudentForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const name = document.getElementById('studentName').value;
-        const cppPoints = Number(document.getElementById('cppPoints').value);
-        const pythonPoints = Number(document.getElementById('pythonPoints').value);
-        const totalPoints = cppPoints + pythonPoints;
-        
-        // Bu günün tarixini keçmiş reytinq qeydi üçün alırıq
-        const today = new Date();
-        const dateString = today.toLocaleDateString('az-AZ') + ' ' + today.toLocaleTimeString('az-AZ', {hour: '2-digit', minute:'2-digit'});
+        const name = document.getElementById('studentName').value.trim();
+        const week = document.getElementById('weekNum').value;
+        const cpp = Number(document.getElementById('cppPoints').value);
+        const python = Number(document.getElementById('pythonPoints').value);
+
+        const docRef = doc(db, "students", name);
+        const docSnap = await getDoc(docRef);
+
+        let studentData = { name: name, weeks: {}, totalCpp: 0, totalPython: 0 };
+        if (docSnap.exists()) {
+            studentData = docSnap.data();
+            if (!studentData.weeks) studentData.weeks = {};
+        }
+
+        studentData.weeks[week] = { cpp: cpp, python: python };
+
+        // Ümumi balları hesablamaq
+        let tCpp = 0, tPy = 0;
+        Object.values(studentData.weeks).forEach(w => {
+            tCpp += (w.cpp || 0);
+            tPy += (w.python || 0);
+        });
+
+        studentData.totalCpp = tCpp;
+        studentData.totalPython = tPy;
 
         try {
-            await addDoc(collection(db, "students"), {
-                name: name,
-                cppPoints: cppPoints,
-                pythonPoints: pythonPoints,
-                totalPoints: totalPoints,
-                lastUpdated: dateString
-            });
+            await setDoc(docRef, studentData);
             addStudentForm.reset();
-            alert("Tələbə məlumatları uğurla əlavə edildi!");
-        } catch (e) {
-            alert("Xəta baş verdi: " + e.message);
+            alert(`${week}-ci həftə balı uğurla əlavə olundu!`);
+        } catch (err) {
+            alert("Xəta: " + err.message);
         }
     });
 }
