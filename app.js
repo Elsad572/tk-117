@@ -144,7 +144,7 @@ function loadLanguageLeaderboard(langType, elementId) {
 loadLanguageLeaderboard('cpp', 'cppList');
 loadLanguageLeaderboard('python', 'pythonList');
 
-// Admin Tərəfi Və Üç Nöqtə Aksion Menyusu
+// Admin Tərəfi
 const ADMINS = { "Elsad": "elsad_29822", "Aytac": "aytac_35723" };
 const loginForm = document.getElementById('loginForm');
 const loginSection = document.getElementById('loginSection');
@@ -176,8 +176,11 @@ function checkAuth() {
     if (!loginSection || !adminPanel) return;
     const currentUser = localStorage.getItem('adminUser');
     if (currentUser) {
+        loginSection.style.display = 'none'; // Giriş kutusunu gizle
         loginSection.classList.add('hidden');
         adminPanel.classList.remove('hidden');
+        adminPanel.style.display = 'block';
+
         const cppGroup = document.getElementById('cppCategoryGroup');
         const editCppGroup = document.getElementById('editCppGroup');
 
@@ -190,8 +193,10 @@ function checkAuth() {
         }
         loadAdminStudentList();
     } else {
+        loginSection.style.display = 'block'; // Çıkış yapıldığında giriş kutusunu göster
         loginSection.classList.remove('hidden');
         adminPanel.classList.add('hidden');
+        adminPanel.style.display = 'none';
     }
 }
 checkAuth();
@@ -246,13 +251,11 @@ function loadAdminStudentList() {
                 actionMenu.classList.toggle('hidden');
             };
 
-            // Düzəlt
             editBtn.onclick = () => {
                 actionMenu.classList.add('hidden');
                 openEditModal(name, data);
             };
 
-            // Sil
             deleteBtn.onclick = async () => {
                 actionMenu.classList.add('hidden');
                 if (currentUser === 'Aytac') {
@@ -285,7 +288,6 @@ document.addEventListener('click', () => {
     document.querySelectorAll('.action-menu').forEach(m => m.classList.add('hidden'));
 });
 
-// Modal Redaktə Açmaq
 function openEditModal(name, data) {
     const editModal = document.getElementById('editModal');
     document.getElementById('editOriginalName').value = name;
@@ -313,7 +315,6 @@ function openEditModal(name, data) {
     editModal.style.display = 'flex';
 }
 
-// Redaktə Formunu Yadda Saxlamaq
 const editStudentForm = document.getElementById('editStudentForm');
 if (editStudentForm) {
     editStudentForm.addEventListener('submit', async (e) => {
@@ -360,7 +361,6 @@ if (editStudentForm) {
     });
 }
 
-// Bal Əlavə Etmə Formu
 const addStudentForm = document.getElementById('addStudentForm');
 if (addStudentForm) {
     addStudentForm.addEventListener('submit', async (e) => {
