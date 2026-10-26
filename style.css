@@ -197,3 +197,27 @@ button { padding: 12px; background-color: #238636; color: white; border: none; b
 .export-btn:hover {
     background-color: #2ea44f;
 }
+/* Tablo Sütun Hizalaması (Tam Hiza İçin) */
+.leaderboard-header.rank-grid-header,
+.student-row.rank-grid-row {
+    display: grid !important;
+    /* 10 sütun: Sıra (30px), Ad (esnek), ve 8 adet eşit puan sütunu */
+    grid-template-columns: 30px minmax(140px, 2fr) repeat(8, 1fr) !important;
+    gap: 10px;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+.leaderboard-header.rank-grid-header span:nth-child(2),
+.student-row.rank-grid-row span:nth-child(2) {
+    text-align: left !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* İsim çok uzunsa yana taşmasını engeller */
+}
+
+/* Mobilde yatay kaydırma çubuğu çıkması için */
+.card {
+    overflow-x: auto;
+}
