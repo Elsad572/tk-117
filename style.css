@@ -22,7 +22,7 @@ header { background-color: #161b22; padding: 15px 25px; display: flex; justify-c
 
 main { flex: 1; padding: 20px; margin: auto; width: 100%; max-width: 980px; }
 
-/* Başlıq və Orta Bölüm */
+/* Başlık və Orta Bölüm */
 .hero-section { text-align: center; margin: 30px 0; }
 .group-title { font-size: 48px; color: #ffffff; font-weight: 900; letter-spacing: 2px; margin-bottom: 5px; }
 .main-title { font-size: 26px; color: #2ea44f; letter-spacing: 1.5px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; }
@@ -35,9 +35,22 @@ h2 { color: #2ea44f; margin-bottom: 10px; font-size: 18px; }
 /* =========================================
    TABLES & LISTS (Ümumi Reytinq)
 ========================================= */
+.leaderboard-header { 
+    display: flex; 
+    justify-content: space-between; 
+    padding: 10px; 
+    color: #8b949e; 
+    font-weight: bold; 
+    border-bottom: 1px solid #30363d; 
+    font-size: 13px; 
+}
 #commonList, #cppList, #pythonList, #adminStudentList { list-style: none; }
 
 li.student-row { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 12px 10px; 
     background-color: #0d1117; 
     margin-top: 8px; 
     border-radius: 6px; 
@@ -51,33 +64,21 @@ li.student-row:hover { background-color: #1f242c; }
 
 /* =========================================
    C++ / PYTHON REYTİNQ MÜTLƏQ HİZALANMASI (GRID)
+   Başlıq və sətirlərin sütunları eyni grid ölçüsündə birləşir
 ========================================= */
-.leaderboard-header.rank-grid-header,
-.student-row.rank-grid-row {
+.rank-grid-header,
+.rank-grid-row {
     display: grid !important;
     grid-template-columns: 35px minmax(140px, 2fr) repeat(8, 1fr) !important;
     align-items: center !important;
     text-align: center !important;
     gap: 5px !important;
     width: 100% !important;
-    padding: 12px 10px !important;
 }
 
-/* Başlıqların şriftini bir qədər kiçildib yığcam etdik */
-.leaderboard-header.rank-grid-header {
-    background-color: #21262d;
-    border-radius: 6px;
-    font-weight: bold;
-    color: #8b949e;
-    font-size: 11.5px !important; 
-    margin-bottom: 10px;
-    letter-spacing: 0.5px;
-}
-
-.leaderboard-header.rank-grid-header span:nth-child(2),
-.student-row.rank-grid-row span:nth-child(2) {
+.rank-grid-header span:nth-child(2),
+.rank-grid-row span:nth-child(2) {
     text-align: left !important;
-    padding-left: 5px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
