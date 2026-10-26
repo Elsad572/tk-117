@@ -36,44 +36,32 @@ const TRANSLATIONS = {
         dict: "IT Lüğəti", infoTab: "Məlumat", teaches: "Tədris edir:", infoTitle: "Məfhum və Təşkilat Məlumatları", 
         creator: "Yaradıcı:", uni: "Universitet:", faculty: "Fakültə:", specialty: "İxtisas:", 
         leaderboard: "Ümumi Reytinq Siyahısı", clickInfo: "Həftəlik balları görmək üçün tələbə adının üstünə klikləyin.", 
-        nameHeader: "Ad Soyad", scoreHeader: "Ümumi Bal",
-        progTech: "PROQRAMLAŞDIRMA TEXNOLOGİYALARI",
-        motto: '"ÖYRƏN, GÜCLƏN, YARAT"',
-        pyTitle: "PYTHON REYTİNQ SİYAHISI", 
-        cppTitle: "C++ REYTİNQ SİYAHISI", 
+        nameHeader: "Ad Soyad", scoreHeader: "Ümumi Bal", progTech: "PROQRAMLAŞDIRMA TEXNOLOGİYALARI",
+        motto: '"ÖYRƏN, GÜCLƏN, YARAT"', pyTitle: "PYTHON REYTİNQ SİYAHISI", cppTitle: "C++ REYTİNQ SİYAHISI", 
         current: "Cari", previous: "Keçmiş", increase: "Artan"
     },
     tr: { 
         dict: "BT Sözlüğü", infoTab: "Bilgi", teaches: "Eğitmen:", infoTitle: "Bilgi ve Organizasyon", 
         creator: "Geliştirici:", uni: "Üniversite:", faculty: "Fakülte:", specialty: "Bölüm:", 
         leaderboard: "Genel Sıralama Listesi", clickInfo: "Haftalık puanları görmek için öğrenci adına tıklayın.", 
-        nameHeader: "Ad Soyad", scoreHeader: "Toplam Puan",
-        progTech: "PROGRAMLAMA TEKNOLOJİLERİ",
-        motto: '"ÖĞREN, GÜÇLEN, YARAT"',
-        pyTitle: "PYTHON SIRALAMA LİSTESİ", 
-        cppTitle: "C++ SIRALAMA LİSTESİ", 
+        nameHeader: "Ad Soyad", scoreHeader: "Toplam Puan", progTech: "PROGRAMLAMA TEKNOLOJİLERİ",
+        motto: '"ÖĞREN, GÜÇLEN, YARAT"', pyTitle: "PYTHON SIRALAMA LİSTESİ", cppTitle: "C++ SIRALAMA LİSTESİ", 
         current: "Mevcut", previous: "Geçmiş", increase: "Artış"
     },
     en: { 
         dict: "IT Dictionary", infoTab: "Info", teaches: "Instructor:", infoTitle: "Info & Organization", 
         creator: "Creator:", uni: "University:", faculty: "Faculty:", specialty: "Specialty:", 
         leaderboard: "Overall Leaderboard", clickInfo: "Click on a student's name to view weekly scores.", 
-        nameHeader: "Full Name", scoreHeader: "Total Score",
-        progTech: "PROGRAMMING TECHNOLOGIES",
-        motto: '"LEARN, EMPOWER, CREATE"',
-        pyTitle: "PYTHON LEADERBOARD", 
-        cppTitle: "C++ LEADERBOARD", 
+        nameHeader: "Full Name", scoreHeader: "Total Score", progTech: "PROGRAMMING TECHNOLOGIES",
+        motto: '"LEARN, EMPOWER, CREATE"', pyTitle: "PYTHON LEADERBOARD", cppTitle: "C++ LEADERBOARD", 
         current: "Current", previous: "Previous", increase: "Change"
     },
     ru: { 
         dict: "IT Словарь", infoTab: "Информация", teaches: "Преподаватель:", infoTitle: "Информация и Организация", 
         creator: "Создатель:", uni: "Университет:", faculty: "Факультет:", specialty: "Специальность:", 
         leaderboard: "Общий Рейтинг", clickInfo: "Нажмите на имя студента, чтобы увидеть еженедельные баллы.", 
-        nameHeader: "Имя Фамилия", scoreHeader: "Общий Балл",
-        progTech: "ТЕХНОЛОГИИ ПРОГРАММИРОВАНИЯ",
-        motto: '"УЧИСЬ, УСИЛИВАЙСЯ, СОЗДАВАЙ"',
-        pyTitle: "РЕЙТИНГ PYTHON", 
-        cppTitle: "РЕЙТИНГ C++", 
+        nameHeader: "Имя Фамилия", scoreHeader: "Общий Балл", progTech: "ТЕХНОЛОГИИ ПРОГРАММИРОВАНИЯ",
+        motto: '"УЧИСЬ, УСИЛИВАЙСЯ, СОЗДАВАЙ"', pyTitle: "РЕЙТИНГ PYTHON", cppTitle: "РЕЙТИНГ C++", 
         current: "Текущий", previous: "Прошлый", increase: "Изм."
     }
 };
@@ -206,7 +194,6 @@ function loadCommonLeaderboard() {
             students.push({ name: data.name || docSnap.id, score: totalScore, lastCpp, lastPy, data });
         });
 
-        // Xala görə böyükdən kiçiyə, xal bərabərdirsə Azərbaycan əlifbası ilə sıralama
         students.sort((a, b) => {
             if (b.score !== a.score) {
                 return b.score - a.score;
@@ -214,7 +201,6 @@ function loadCommonLeaderboard() {
             return azSortNames(a.name, b.name);
         });
 
-        // Qızılı "İNTELLEKTUALLAR" Top 3 Render
         const topThreeEl = document.getElementById('topThreeContainer');
         if (topThreeEl) {
             topThreeEl.innerHTML = '';
@@ -387,13 +373,26 @@ function checkAuth() {
 
         const cppGroup = document.getElementById('cppCategoryGroup');
         const editCppGroup = document.getElementById('editCppGroup');
+        const addCourseSelection = document.getElementById('addCourseSelection');
+        const editCourseSelection = document.getElementById('editCourseSelection');
 
+        // Aytac ancaq Python görür və Kurs seçimi paneli ondan tamamilə gizlədilir
         if (currentUser === 'aytac') {
             if (cppGroup) cppGroup.style.display = 'none';
             if (editCppGroup) editCppGroup.style.display = 'none';
+            if (addCourseSelection) addCourseSelection.style.display = 'none';
+            if (editCourseSelection) editCourseSelection.style.display = 'none';
         } else {
-            if (cppGroup) cppGroup.style.display = 'block';
-            if (editCppGroup) editCppGroup.style.display = 'block';
+            // Elşad üçün panellər göstərilir
+            if (addCourseSelection) addCourseSelection.style.display = 'flex';
+            if (editCourseSelection) editCourseSelection.style.display = 'flex';
+            
+            // Radio button məntiqini tətbiq et (Elşad üçündür)
+            const addChecked = document.querySelector('input[name="addCourse"]:checked');
+            if (addChecked) addChecked.dispatchEvent(new Event('change'));
+            
+            const editChecked = document.querySelector('input[name="editCourse"]:checked');
+            if (editChecked) editChecked.dispatchEvent(new Event('change'));
         }
         loadAdminStudentList();
     } else {
@@ -405,7 +404,33 @@ function checkAuth() {
 }
 checkAuth();
 
-// 9. ADMIN TƏLƏBƏ SİYAHISI (AZƏRBAYCAN ƏLİFBASI İLƏ DƏQİQ SIRALAMA)
+// KURS SEÇİMİ (RADIO BUTONLARI) ÜÇÜN DİNAMİK GÖSTƏRMƏ MƏNTİQİ
+function setupCourseToggles(radioName, cppGroupId, pyGroupId) {
+    const radios = document.querySelectorAll(`input[name="${radioName}"]`);
+    const cppGroup = document.getElementById(cppGroupId);
+    const pyGroup = document.getElementById(pyGroupId);
+
+    radios.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            const val = e.target.value;
+            if (val === 'both') {
+                if (cppGroup) cppGroup.style.display = 'block';
+                if (pyGroup) pyGroup.style.display = 'block';
+            } else if (val === 'cpp') {
+                if (cppGroup) cppGroup.style.display = 'block';
+                if (pyGroup) pyGroup.style.display = 'none';
+            } else if (val === 'python') {
+                if (cppGroup) cppGroup.style.display = 'none';
+                if (pyGroup) pyGroup.style.display = 'block';
+            }
+        });
+    });
+}
+setupCourseToggles('addCourse', 'cppCategoryGroup', 'pythonCategoryGroup');
+setupCourseToggles('editCourse', 'editCppGroup', 'editPyGroup');
+
+
+// 9. ADMIN TƏLƏBƏ SİYAHISI
 function loadAdminStudentList() {
     const listEl = document.getElementById('adminStudentList');
     if (!listEl) return;
@@ -502,7 +527,7 @@ document.addEventListener('click', () => {
     document.querySelectorAll('.action-menu').forEach(m => m.classList.add('hidden'));
 });
 
-// 10. ADMIN REDAKTƏ VƏ ƏLAVƏ ETMƏ FORMULARI (HƏFTƏ/BAL MƏCBURİ DEYİL)
+// 10. ADMIN REDAKTƏ VƏ ƏLAVƏ ETMƏ FORMULARI
 const closeEditModal = document.getElementById('closeEditModal');
 if (closeEditModal) closeEditModal.onclick = () => document.getElementById('editModal').style.display = 'none';
 
@@ -551,13 +576,17 @@ if (editStudentForm) {
             if (!data.weeks[week]) data.weeks[week] = {};
             data.name = newName;
 
-            data.weeks[week].py_fm = Number(document.getElementById('edit_py_fm').value) || 0;
-            data.weeks[week].py_so = Number(document.getElementById('edit_py_so').value) || 0;
-            data.weeks[week].py_eo = Number(document.getElementById('edit_py_eo').value) || 0;
-            data.weeks[week].py_cf = Number(document.getElementById('edit_py_cf').value) || 0;
-            data.weeks[week].py_hr = Number(document.getElementById('edit_py_hr').value) || 0;
+            const editCourseChoice = currentUser === 'aytac' ? 'python' : document.querySelector('input[name="editCourse"]:checked').value;
 
-            if (currentUser !== 'aytac') {
+            if (editCourseChoice === 'both' || editCourseChoice === 'python') {
+                data.weeks[week].py_fm = Number(document.getElementById('edit_py_fm').value) || 0;
+                data.weeks[week].py_so = Number(document.getElementById('edit_py_so').value) || 0;
+                data.weeks[week].py_eo = Number(document.getElementById('edit_py_eo').value) || 0;
+                data.weeks[week].py_cf = Number(document.getElementById('edit_py_cf').value) || 0;
+                data.weeks[week].py_hr = Number(document.getElementById('edit_py_hr').value) || 0;
+            }
+
+            if (editCourseChoice === 'both' || editCourseChoice === 'cpp') {
                 data.weeks[week].cpp_fm = Number(document.getElementById('edit_cpp_fm').value) || 0;
                 data.weeks[week].cpp_so = Number(document.getElementById('edit_cpp_so').value) || 0;
                 data.weeks[week].cpp_eo = Number(document.getElementById('edit_cpp_eo').value) || 0;
@@ -600,13 +629,17 @@ if (addStudentForm) {
             const week = weekInput;
             if (!studentData.weeks[week]) studentData.weeks[week] = {};
 
-            studentData.weeks[week].py_fm = Number(document.getElementById('py_fm').value) || 0;
-            studentData.weeks[week].py_so = Number(document.getElementById('py_so').value) || 0;
-            studentData.weeks[week].py_eo = Number(document.getElementById('py_eo').value) || 0;
-            studentData.weeks[week].py_cf = Number(document.getElementById('py_cf').value) || 0;
-            studentData.weeks[week].py_hr = Number(document.getElementById('py_hr').value) || 0;
+            const courseChoice = currentUser === 'aytac' ? 'python' : document.querySelector('input[name="addCourse"]:checked').value;
 
-            if (currentUser !== 'aytac') {
+            if (courseChoice === 'both' || courseChoice === 'python') {
+                studentData.weeks[week].py_fm = Number(document.getElementById('py_fm').value) || 0;
+                studentData.weeks[week].py_so = Number(document.getElementById('py_so').value) || 0;
+                studentData.weeks[week].py_eo = Number(document.getElementById('py_eo').value) || 0;
+                studentData.weeks[week].py_cf = Number(document.getElementById('py_cf').value) || 0;
+                studentData.weeks[week].py_hr = Number(document.getElementById('py_hr').value) || 0;
+            }
+
+            if (courseChoice === 'both' || courseChoice === 'cpp') {
                 studentData.weeks[week].cpp_fm = Number(document.getElementById('cpp_fm').value) || 0;
                 studentData.weeks[week].cpp_so = Number(document.getElementById('cpp_so').value) || 0;
                 studentData.weeks[week].cpp_eo = Number(document.getElementById('cpp_eo').value) || 0;
@@ -629,7 +662,8 @@ if (addStudentForm) {
         }
     });
 }
-// 11. TƏLƏBƏ AXTARIŞI (FİLTRLƏMƏ)
+
+// 11. TƏLƏBƏ AXTARIŞI
 const searchInput = document.getElementById('searchInput');
 if (searchInput) {
     searchInput.addEventListener('input', function() {
@@ -637,7 +671,6 @@ if (searchInput) {
         let rows = document.querySelectorAll('.student-row');
         
         rows.forEach(row => {
-            // Sətrin içindəki mətni oxuyur (Ad və ya bala görə axtarış edir)
             let text = row.textContent.toLowerCase();
             if (text.includes(filter)) {
                 row.style.display = ""; 
@@ -648,33 +681,28 @@ if (searchInput) {
     });
 }
 
-// 12. EXCEL (CSV) KİMİ YÜKLƏMƏ (Admin Panel üçün)
+// 12. EXCEL (CSV) YÜKLƏMƏ
 const exportExcelBtn = document.getElementById('exportExcelBtn');
 if (exportExcelBtn) {
     exportExcelBtn.addEventListener('click', () => {
-        // Excel-in Azərbaycan hərflərini (Ə, Ç, Ş, Ğ, Ö, Ü) tanıması üçün \uFEFF əlavə edirik
         let csv = "\uFEFFSıra,Ad Soyad,C++ Balı,Python Balı\n"; 
         let rows = document.querySelectorAll('#adminStudentList .student-row');
         
         rows.forEach(row => {
-            // Yalnız ekranda görünən (axtarışdan keçmiş) tələbələri yükləyir
             if (row.style.display !== "none") {
                 let rank = row.querySelector('span:nth-child(1)').innerText.trim();
                 let name = row.querySelector('span:nth-child(2)').innerText.trim();
                 let cpp = row.querySelector('span:nth-child(3)').innerText.replace(' pt', '').trim();
                 let py = row.querySelector('span:nth-child(4)').innerText.replace(' pt', '').trim();
-                
-                // Məlumatları CSV formatında birləşdirir
                 csv += `${rank},${name},${cpp},${py}\n`;
             }
         });
 
-        // Faylı yaratmaq və avtomatik yüklətmək
         let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         let link = document.createElement("a");
         let url = URL.createObjectURL(blob);
         link.setAttribute("href", url);
-        link.setAttribute("download", "TK-117_Reytinq.csv"); // Faylın adı
+        link.setAttribute("download", "TK-117_Reytinq.csv");
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
