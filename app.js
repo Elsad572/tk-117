@@ -712,4 +712,4 @@ if (exportExcelBtn) {
         document.body.removeChild(link);
     });
 }
-}
+
