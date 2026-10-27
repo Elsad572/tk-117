@@ -464,8 +464,9 @@ function loadAdminStudentList() {
             const li = document.createElement('li');
             li.className = 'student-row';
             li.style.display = 'grid';
-            li.style.gridTemplateColumns = '30px 1fr 80px 80px 40px';
+            li.style.gridTemplateColumns = '30px minmax(130px, 1.5fr) 1fr 1fr 40px';
             li.style.textAlign = 'center';
+            li.style.alignItems = 'center';
 
             li.innerHTML = `
                 <span>${rank}</span>
@@ -681,31 +682,87 @@ if (searchInput) {
     });
 }
 
-// 12. EXCEL (CSV) YÜKLƏMƏ
-const exportExcelBtn = document.getElementById('exportExcelBtn');
-if (exportExcelBtn) {
-    exportExcelBtn.addEventListener('click', () => {
-        let csv = "\uFEFFSıra,Ad Soyad,C++ Balı,Python Balı\n"; 
-        let rows = document.querySelectorAll('#adminStudentList .student-row');
-        
-        rows.forEach(row => {
-            if (row.style.display !== "none") {
-                let rank = row.querySelector('span:nth-child(1)').innerText.trim();
-                let name = row.querySelector('span:nth-child(2)').innerText.trim();
-                let cpp = row.querySelector('span:nth-child(3)').innerText.replace(' pt', '').trim();
-                let py = row.querySelector('span:nth-child(4)').innerText.replace(' pt', '').trim();
-                csv += `${rank},${name},${cpp},${py}\n`;
-            }
-        });
+// 12. PDF ÇIXARTMA (ÜMUMİ, C++ VƏ YA PYTHON)
+const exportPdfBtn = document.getElementById('exportPdfBtn');
+const pdfSelect = document.getElementById('pdfSelect');
 
-        let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        let link = document.createElement("a");
-        let url = URL.createObjectURL(blob);
-        link.setAttribute("href", url);
-        link.setAttribute("download", "TK-117_Reytinq.csv");
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+if (exportPdfBtn && pdfSelect) {
+    exportPdfBtn.addEventListener('click', () => {
+        const type = pdfSelect.value;
+        let title = "TK-117 | ";
+        let theadHTML = "";
+        let tbodyHTML = "";
+        let rows = document.querySelectorAll('#adminStudentList .student-row');
+
+        if (type === 'common') {
+            title += "Ümumi Reytinq Siyahısı";
+            theadHTML = `<tr><th>Sıra</th><th style="text-align:left;">Ad Soyad</th><th>C++ Cari</th><th>Py Cari</th><th>Ümumi Bal</th></tr>`;
+            rows.forEach(row => {
+                if (row.style.display !== "none") {
+                    let rank = row.children[0].innerText;
+                    let name = row.children[1].innerText;
+                    let cpp = row.children[2].innerText.replace(' pt', '');
+                    let py = row.children[3].innerText.replace(' pt', '');
+                    let total = Number(cpp) + Number(py);
+                    tbodyHTML += `<tr><td>${rank}</td><td style="text-align:left;">${name}</td><td>${cpp}</td><td>${py}</td><td><b>${total} pt</b></td></tr>`;
+                }
+            });
+        } 
+        else if (type === 'cpp') {
+            title += "C++ Reytinq Siyahısı";
+            theadHTML = `<tr><th>Sıra</th><th style="text-align:left;">Ad Soyad</th><th>C++ Balı</th></tr>`;
+            rows.forEach(row => {
+                if (row.style.display !== "none") {
+                    let rank = row.children[0].innerText;
+                    let name = row.children[1].innerText;
+                    let cpp = row.children[2].innerText;
+                    tbodyHTML += `<tr><td>${rank}</td><td style="text-align:left;">${name}</td><td><b>${cpp}</b></td></tr>`;
+                }
+            });
+        } 
+        else if (type === 'python') {
+            title += "Python Reytinq Siyahısı";
+            theadHTML = `<tr><th>Sıra</th><th style="text-align:left;">Ad Soyad</th><th>Python Balı</th></tr>`;
+            rows.forEach(row => {
+                if (row.style.display !== "none") {
+                    let rank = row.children[0].innerText;
+                    let name = row.children[1].innerText;
+                    let py = row.children[3].innerText;
+                    tbodyHTML += `<tr><td>${rank}</td><td style="text-align:left;">${name}</td><td><b>${py}</b></td></tr>`;
+                }
+            });
+        }
+
+        // PDF yazdırmaq üçün yeni pəncərə (iframe/window)
+        const printWindow = window.open('', '', 'height=800,width=800');
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>${title}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; color: #333; }
+                        h2 { text-align: center; color: #2ea44f; margin-bottom: 20px; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+                        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+                        th { background-color: #f4f4f4; color: #333; font-weight: bold; }
+                        tr:nth-child(even) { background-color: #f9f9f9; }
+                    </style>
+                </head>
+                <body>
+                    <h2>${title}</h2>
+                    <table>
+                        <thead>${theadHTML}</thead>
+                        <tbody>${tbodyHTML}</tbody>
+                    </table>
+                </body>
+            </html>
+        `);
+        printWindow.document.close();
+        
+        // Pəncərə yükləndikdən sonra yazdırma dialoqunu açırıq
+        printWindow.onload = function() {
+            printWindow.focus();
+            printWindow.print();
+        };
     });
 }
