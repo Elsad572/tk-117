@@ -175,19 +175,22 @@
                         box.appendChild(actionsDiv);
 
                         // Kod ekranı
-                        let textArea = document.createElement('textarea');
-                        textArea.value = e.target.result;
-                        textArea.rows = 6;
-                        textArea.readOnly = true;
-                        textArea.style.width = "100%";
-                        textArea.style.background = "#161b22";
-                        textArea.style.color = "#58a6ff";
-                        textArea.style.border = "1px solid #30363d";
-                        textArea.style.borderRadius = "4px";
-                        textArea.style.padding = "10px";
-                        textArea.style.fontFamily = "monospace";
-                        textArea.style.resize = "vertical";
-                        box.appendChild(textArea);
+                        // Kod ekranı
+let textArea = document.createElement('textarea');
+textArea.value = e.target.result;
+textArea.rows = 12; // Başlangıç boyutunu büyütür
+textArea.readOnly = true;
+textArea.style.width = "100%";
+textArea.style.background = "#161b22";
+textArea.style.color = "#58a6ff";
+textArea.style.border = "1px solid #30363d";
+textArea.style.borderRadius = "4px";
+textArea.style.padding = "10px";
+textArea.style.fontFamily = "monospace";
+textArea.style.resize = "vertical"; // Yalnızca dikey olarak büyütüp küçültmeye izin verir
+textArea.style.minHeight = "120px"; // İnebileceği en küçük yükseklik
+textArea.style.maxHeight = "700px"; // Çıkabileceği en büyük yükseklik
+box.appendChild(textArea);
 
                         // Tab dəyişdirmə məntiqi
                         tabBtn.onclick = function() {
