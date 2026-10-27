@@ -35,16 +35,18 @@
         <div class="card">
             <h2>Online C++ Kompilyator</h2>
             
-            <!-- FAYL YÜKLƏMƏ BÖLMƏSİ (YENİ) -->
-            <div style="margin-top: 15px; margin-bottom: 15px;">
+            <!-- FAYL YÜKLƏMƏ BÖLMƏSİ (ÇOXLU FAYL ÜÇÜN) -->
+            <div style="margin-top: 15px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
                 <label for="fileUpload" style="background-color: #238636; color: #ffffff; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;">
-                    📂 C++ Faylı Yüklə (.cpp)
+                    📂 C++ Fayllarını Yüklə (Maks. 10)
                 </label>
-                <input type="file" id="fileUpload" accept=".cpp, .txt, .py" style="display: none;">
+                <!-- multiple parametri eyni anda birdən çox fayl seçməyə imkan verir -->
+                <input type="file" id="fileUpload" accept=".cpp, .txt, .h, .py" multiple style="display: none;">
+                <span id="fileCountText" style="color: #8b949e; font-size: 14px; font-weight: bold;">0 / 10 fayl yüklənib</span>
             </div>
             
-            <!-- KODUN GÖZÜKƏCƏYİ YER (YENİ) -->
-            <textarea id="codeViewer" rows="8" style="width: 100%; display: none; background: #0d1117; color: #58a6ff; padding: 10px; border: 1px solid #30363d; border-radius: 6px; margin-bottom: 15px; font-family: monospace;" readonly placeholder="Kod burada görünəcək... Kopyalayıb aşağıya yapışdırın."></textarea>
+            <!-- YÜKLƏNƏN FAYLLARIN QUTULARI BURADA YARANACAQ -->
+            <div id="fileContainer" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px;"></div>
             
             <iframe src="https://onecompiler.com/embed/cpp?theme=dark" width="100%" height="650px" frameborder="0"></iframe>
         </div>
@@ -60,26 +62,128 @@
         </div>
     </div>
 
-    <!-- FAYL OXUMA SKRİPTİ (YENİ) -->
+    <!-- FAYL OXUMA, KOPYALAMA VƏ SİLMƏ SKRİPTİ -->
     <script>
         const fileUpload = document.getElementById('fileUpload');
-        const codeViewer = document.getElementById('codeViewer');
+        const fileContainer = document.getElementById('fileContainer');
+        const fileCountText = document.getElementById('fileCountText');
+        let uploadedFilesCount = 0;
 
         if (fileUpload) {
             fileUpload.addEventListener('change', function(event) {
-                let file = event.target.files[0];
-                if (!file) return;
+                let files = event.target.files;
+                if (files.length === 0) return;
 
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    codeViewer.value = e.target.result;
-                    codeViewer.style.display = "block"; // Fayl seçiləndə xananı göstər
-                };
-                reader.onerror = function() {
-                    alert("Faylı oxumaq mümkün olmadı!");
-                };
-                reader.readAsText(file);
-                event.target.value = ""; 
+                for (let i = 0; i < files.length; i++) {
+                    if (uploadedFilesCount >= 10) {
+                        alert("Siz artıq maksimum 10 fayl yükləmisiniz! Yenisini əlavə etmək üçün əvvəlcə bəzilərini silin.");
+                        break;
+                    }
+
+                    let file = files[i];
+                    let reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        uploadedFilesCount++;
+                        fileCountText.innerText = `${uploadedFilesCount} / 10 fayl yüklənib`;
+
+                        // Əsas Qutu
+                        let box = document.createElement('div');
+                        box.style.background = "#0d1117";
+                        box.style.border = "1px solid #30363d";
+                        box.style.borderRadius = "6px";
+                        box.style.padding = "10px";
+
+                        // Üst hissə (Ad və Düymələr)
+                        let headerDiv = document.createElement('div');
+                        headerDiv.style.display = "flex";
+                        headerDiv.style.justifyContent = "space-between";
+                        headerDiv.style.alignItems = "center";
+                        headerDiv.style.marginBottom = "10px";
+                        headerDiv.style.flexWrap = "wrap";
+                        headerDiv.style.gap = "10px";
+
+                        let fileName = document.createElement('span');
+                        fileName.innerText = "📄 " + file.name;
+                        fileName.style.color = "#58a6ff";
+                        fileName.style.fontWeight = "bold";
+
+                        // Düymələrin qutusu
+                        let actionsDiv = document.createElement('div');
+                        actionsDiv.style.display = "flex";
+                        actionsDiv.style.gap = "8px";
+
+                        let copyBtn = document.createElement('button');
+                        copyBtn.innerText = "📋 Kopyala";
+                        copyBtn.style.padding = "6px 12px";
+                        copyBtn.style.background = "#21262d";
+                        copyBtn.style.color = "#c9d1d9";
+                        copyBtn.style.border = "1px solid #30363d";
+                        copyBtn.style.borderRadius = "6px";
+                        copyBtn.style.cursor = "pointer";
+
+                        let deleteBtn = document.createElement('button');
+                        deleteBtn.innerText = "🗑️ Sil";
+                        deleteBtn.style.padding = "6px 12px";
+                        deleteBtn.style.background = "rgba(218, 54, 51, 0.1)";
+                        deleteBtn.style.color = "#ff7b72";
+                        deleteBtn.style.border = "1px solid #da3633";
+                        deleteBtn.style.borderRadius = "6px";
+                        deleteBtn.style.cursor = "pointer";
+
+                        actionsDiv.appendChild(copyBtn);
+                        actionsDiv.appendChild(deleteBtn);
+                        headerDiv.appendChild(fileName);
+                        headerDiv.appendChild(actionsDiv);
+
+                        // Mətn Xanası (Textarea)
+                        let textArea = document.createElement('textarea');
+                        textArea.value = e.target.result;
+                        textArea.rows = 5;
+                        textArea.readOnly = true;
+                        textArea.style.width = "100%";
+                        textArea.style.background = "#161b22";
+                        textArea.style.color = "#e6edf3";
+                        textArea.style.border = "1px solid #30363d";
+                        textArea.style.borderRadius = "4px";
+                        textArea.style.padding = "10px";
+                        textArea.style.fontFamily = "monospace";
+                        textArea.style.resize = "vertical";
+
+                        // Kopyalama Funksiyası
+                        copyBtn.onclick = function() {
+                            textArea.select();
+                            navigator.clipboard.writeText(textArea.value).then(() => {
+                                copyBtn.innerText = "✅ Kopyalandı!";
+                                copyBtn.style.color = "#3fb950";
+                                copyBtn.style.borderColor = "#3fb950";
+                                setTimeout(() => {
+                                    copyBtn.innerText = "📋 Kopyala";
+                                    copyBtn.style.color = "#c9d1d9";
+                                    copyBtn.style.borderColor = "#30363d";
+                                }, 2000);
+                            });
+                        };
+
+                        // Silmə Funksiyası
+                        deleteBtn.onclick = function() {
+                            box.remove();
+                            uploadedFilesCount--;
+                            fileCountText.innerText = `${uploadedFilesCount} / 10 fayl yüklənib`;
+                        };
+
+                        box.appendChild(headerDiv);
+                        box.appendChild(textArea);
+                        fileContainer.appendChild(box);
+                    };
+
+                    reader.onerror = function() {
+                        alert("Xəta: " + file.name + " oxunmadı!");
+                    };
+
+                    reader.readAsText(file);
+                }
+                event.target.value = ""; // Eyni faylı təkrar seçmək üçün sıfırlama
             });
         }
     </script>
