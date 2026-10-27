@@ -5,6 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TK-117 | Python Kompilyator</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Tab Dizaynı Üçün Xüsusi CSS -->
+    <style>
+        .file-tab {
+            padding: 10px 18px;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+            margin-bottom: -1px;
+            border: 1px solid transparent;
+            color: #8b949e;
+            background: #161b22;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .file-tab.active {
+            background: #0d1117;
+            color: #58a6ff;
+            border: 1px solid #30363d;
+            border-bottom: 1px solid #0d1117;
+            position: relative;
+            z-index: 2;
+        }
+        .file-tab:hover:not(.active) {
+            background: #21262d;
+            color: #c9d1d9;
+        }
+        #tabsRow::-webkit-scrollbar { height: 6px; }
+        #tabsRow::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+    </style>
 </head>
 <body>
     <header>
@@ -34,6 +64,22 @@
     <main>
         <div class="card">
             <h2>Online Python Kompilyator</h2>
+            
+            <!-- FAYL YÜKLƏMƏ BÖLMƏSİ -->
+            <div style="margin-top: 15px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                <label for="fileUpload" style="background-color: #238636; color: #ffffff; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;">
+                    📂 Python Fayllarını Yüklə (Maks. 10)
+                </label>
+                <input type="file" id="fileUpload" accept=".py, .txt" multiple style="display: none;">
+                <span id="fileCountText" style="color: #8b949e; font-size: 14px; font-weight: bold;">0 / 10 fayl yüklənib</span>
+            </div>
+            
+            <!-- BROWSER TİPİ TAB BÖLMƏSİ -->
+            <div id="tabsRow" style="display: none; flex-wrap: nowrap; gap: 2px; border-bottom: 1px solid #30363d; overflow-x: auto; padding-left: 5px;"></div>
+            
+            <!-- TABLARIN İÇİNDƏKİ MƏZMUNLAR (KODLAR VƏ DÜYMƏLƏR) -->
+            <div id="fileContainer" style="margin-bottom: 20px;"></div>
+
             <iframe src="https://onecompiler.com/embed/python?theme=dark" width="100%" height="650px" frameborder="0"></iframe>
         </div>
     </main>
@@ -47,6 +93,154 @@
             <div id="dictList" class="dict-list"></div>
         </div>
     </div>
+
+    <!-- FAYL TAB SKRİPTİ -->
+    <script>
+        const fileUpload = document.getElementById('fileUpload');
+        const tabsRow = document.getElementById('tabsRow');
+        const fileContainer = document.getElementById('fileContainer');
+        const fileCountText = document.getElementById('fileCountText');
+        
+        let uploadedFilesCount = 0;
+        let fileIdCounter = 0;
+
+        function updateTabsVisibility() {
+            tabsRow.style.display = uploadedFilesCount > 0 ? "flex" : "none";
+        }
+
+        if (fileUpload) {
+            fileUpload.addEventListener('change', function(event) {
+                let files = event.target.files;
+                if (files.length === 0) return;
+
+                for (let i = 0; i < files.length; i++) {
+                    if (uploadedFilesCount >= 10) {
+                        alert("Siz artıq maksimum 10 fayl yükləmisiniz!");
+                        break;
+                    }
+
+                    let file = files[i];
+                    let reader = new FileReader();
+                    let currentFileId = 'file_' + fileIdCounter++;
+
+                    reader.onload = function(e) {
+                        uploadedFilesCount++;
+                        fileCountText.innerText = `${uploadedFilesCount} / 10 fayl yüklənib`;
+                        updateTabsVisibility();
+
+                        // 1. TAB DÜYMƏSİ (VƏRƏQ) YARADILIR
+                        let tabBtn = document.createElement('div');
+                        tabBtn.className = "file-tab";
+                        tabBtn.innerText = "📄 " + file.name;
+                        
+                        // 2. MƏZMUN QUTUSU
+                        let box = document.createElement('div');
+                        box.style.background = "#0d1117";
+                        box.style.border = "1px solid #30363d";
+                        box.style.borderTop = "none";
+                        box.style.borderRadius = "0 6px 6px 6px";
+                        box.style.padding = "15px";
+                        box.style.display = "none";
+
+                        // Düymələr bloku
+                        let actionsDiv = document.createElement('div');
+                        actionsDiv.style.display = "flex";
+                        actionsDiv.style.justifyContent = "flex-end";
+                        actionsDiv.style.gap = "10px";
+                        actionsDiv.style.marginBottom = "10px";
+
+                        let copyBtn = document.createElement('button');
+                        copyBtn.innerText = "📋 Kopyala";
+                        copyBtn.style.padding = "6px 12px";
+                        copyBtn.style.background = "#21262d";
+                        copyBtn.style.color = "#c9d1d9";
+                        copyBtn.style.border = "1px solid #30363d";
+                        copyBtn.style.borderRadius = "6px";
+                        copyBtn.style.cursor = "pointer";
+                        copyBtn.style.fontWeight = "bold";
+
+                        let deleteBtn = document.createElement('button');
+                        deleteBtn.innerText = "🗑️ Sil";
+                        deleteBtn.style.padding = "6px 12px";
+                        deleteBtn.style.background = "rgba(218, 54, 51, 0.1)";
+                        deleteBtn.style.color = "#ff7b72";
+                        deleteBtn.style.border = "1px solid #da3633";
+                        deleteBtn.style.borderRadius = "6px";
+                        deleteBtn.style.cursor = "pointer";
+                        deleteBtn.style.fontWeight = "bold";
+
+                        actionsDiv.appendChild(copyBtn);
+                        actionsDiv.appendChild(deleteBtn);
+                        box.appendChild(actionsDiv);
+
+                        // Kod ekranı
+                        let textArea = document.createElement('textarea');
+                        textArea.value = e.target.result;
+                        textArea.rows = 12;
+                        textArea.readOnly = true;
+                        textArea.style.width = "100%";
+                        textArea.style.background = "#161b22";
+                        textArea.style.color = "#58a6ff";
+                        textArea.style.border = "1px solid #30363d";
+                        textArea.style.borderRadius = "4px";
+                        textArea.style.padding = "10px";
+                        textArea.style.fontFamily = "monospace";
+                        textArea.style.resize = "vertical"; 
+                        textArea.style.minHeight = "120px"; 
+                        textArea.style.maxHeight = "700px"; 
+                        box.appendChild(textArea);
+
+                        // Tab dəyişdirmə məntiqi
+                        tabBtn.onclick = function() {
+                            document.querySelectorAll('.file-tab').forEach(t => t.classList.remove('active'));
+                            Array.from(fileContainer.children).forEach(c => c.style.display = "none");
+                            
+                            tabBtn.classList.add('active');
+                            box.style.display = "block";
+                        };
+
+                        // Kopyalama funksiyası
+                        copyBtn.onclick = function() {
+                            textArea.select();
+                            navigator.clipboard.writeText(textArea.value).then(() => {
+                                copyBtn.innerText = "✅ Kopyalandı!";
+                                copyBtn.style.color = "#3fb950";
+                                copyBtn.style.borderColor = "#3fb950";
+                                setTimeout(() => {
+                                    copyBtn.innerText = "📋 Kopyala";
+                                    copyBtn.style.color = "#c9d1d9";
+                                    copyBtn.style.borderColor = "#30363d";
+                                }, 2000);
+                            });
+                        };
+
+                        // Silmə funksiyası
+                        deleteBtn.onclick = function() {
+                            let wasActive = tabBtn.classList.contains('active');
+                            box.remove();
+                            tabBtn.remove();
+                            uploadedFilesCount--;
+                            fileCountText.innerText = `${uploadedFilesCount} / 10 fayl yüklənib`;
+                            updateTabsVisibility();
+                            
+                            if (wasActive) {
+                                let firstTab = tabsRow.querySelector('.file-tab');
+                                if (firstTab) firstTab.click();
+                            }
+                        };
+
+                        tabsRow.appendChild(tabBtn);
+                        fileContainer.appendChild(box);
+
+                        tabBtn.click();
+                    };
+
+                    reader.readAsText(file);
+                }
+                event.target.value = ""; 
+            });
+        }
+    </script>
 
     <script type="module" src="app.js"></script>
 </body>
