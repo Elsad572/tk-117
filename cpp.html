@@ -34,6 +34,18 @@
     <main>
         <div class="card">
             <h2>Online C++ Kompilyator</h2>
+            
+            <!-- FAYL YÜKLƏMƏ BÖLMƏSİ (YENİ) -->
+            <div style="margin-top: 15px; margin-bottom: 15px;">
+                <label for="fileUpload" style="background-color: #238636; color: #ffffff; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;">
+                    📂 C++ Faylı Yüklə (.cpp)
+                </label>
+                <input type="file" id="fileUpload" accept=".cpp, .txt, .py" style="display: none;">
+            </div>
+            
+            <!-- KODUN GÖZÜKƏCƏYİ YER (YENİ) -->
+            <textarea id="codeViewer" rows="8" style="width: 100%; display: none; background: #0d1117; color: #58a6ff; padding: 10px; border: 1px solid #30363d; border-radius: 6px; margin-bottom: 15px; font-family: monospace;" readonly placeholder="Kod burada görünəcək... Kopyalayıb aşağıya yapışdırın."></textarea>
+            
             <iframe src="https://onecompiler.com/embed/cpp?theme=dark" width="100%" height="650px" frameborder="0"></iframe>
         </div>
     </main>
@@ -47,6 +59,30 @@
             <div id="dictList" class="dict-list"></div>
         </div>
     </div>
+
+    <!-- FAYL OXUMA SKRİPTİ (YENİ) -->
+    <script>
+        const fileUpload = document.getElementById('fileUpload');
+        const codeViewer = document.getElementById('codeViewer');
+
+        if (fileUpload) {
+            fileUpload.addEventListener('change', function(event) {
+                let file = event.target.files[0];
+                if (!file) return;
+
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    codeViewer.value = e.target.result;
+                    codeViewer.style.display = "block"; // Fayl seçiləndə xananı göstər
+                };
+                reader.onerror = function() {
+                    alert("Faylı oxumaq mümkün olmadı!");
+                };
+                reader.readAsText(file);
+                event.target.value = ""; 
+            });
+        }
+    </script>
 
     <script type="module" src="app.js"></script>
 </body>
