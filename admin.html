@@ -85,15 +85,14 @@
             <div class="tools-container" style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
                 <input type="text" id="searchInput" class="search-box" style="flex: 1; min-width: 200px; padding: 12px; background-color: #0d1117; border: 1px solid #30363d; border-radius: 6px; color: #c9d1d9;" placeholder="Tələbənin adını axtar...">
                 
-                <!-- YENİ PDF ÇIXARTMA BÖLMƏSİ -->
-                <div style="display: flex; gap: 5px;">
-                    <select id="pdfSelect" style="background-color: #0d1117; color: #e6edf3; border: 1px solid #30363d; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 14px;">
-                        <option value="common">Ümumi Reytinq</option>
-                        <option value="cpp">C++ Reytinq</option>
-                        <option value="python">Python Reytinq</option>
-                    </select>
-                    <button id="exportPdfBtn" class="export-btn" style="background-color: #d73a49; color: #ffffff; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold;">📄 PDF Yüklə</button>
-                </div>
+                 <!-- Axtarış və Excel Yükləmə Paneli -->
+<div class="tools-container">
+    <input type="text" id="searchInput" class="search-box" placeholder="Tələbənin adını axtar...">
+    <button id="exportExcelBtn" class="export-btn">📥 Excel (CSV) Yüklə</button>
+</div>
+            <div class="tools-container" style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+                <input type="text" id="searchInput" class="search-box" style="flex: 1; min-width: 200px; padding: 12px; background-color: #0d1117; border: 1px solid #30363d; border-radius: 6px; color: #c9d1d9;" placeholder="Tələbənin adını axtar...">
+                <button id="exportExcelBtn" class="export-btn" style="background-color: #238636; color: #ffffff; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold;">📥 Excel (CSV) Yüklə</button>
             </div>
     </main>
 
