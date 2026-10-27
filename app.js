@@ -690,11 +690,14 @@ if (exportExcelBtn) {
         
         rows.forEach(row => {
             if (row.style.display !== "none") {
-                let rank = row.querySelector('span:nth-child(1)').innerText.trim();
-                let name = row.querySelector('span:nth-child(2)').innerText.trim();
-                let cpp = row.querySelector('span:nth-child(3)').innerText.replace(' pt', '').trim();
-                let py = row.querySelector('span:nth-child(4)').innerText.replace(' pt', '').trim();
-                csv += `${rank},${name},${cpp},${py}\n`;
+                const spans = row.querySelectorAll('span');
+                if (spans.length >= 4) {
+                    let rank = spans[0].innerText.trim();
+                    let name = spans[1].innerText.trim();
+                    let cpp = spans[2].innerText.replace(' pt', '').trim();
+                    let py = spans[3].innerText.replace(' pt', '').trim();
+                    csv += `${rank},${name},${cpp},${py}\n`;
+                }
             }
         });
 
@@ -708,4 +711,5 @@ if (exportExcelBtn) {
         link.click();
         document.body.removeChild(link);
     });
+}
 }
