@@ -462,23 +462,21 @@ function loadAdminStudentList() {
             let pyCari = (lastW.py_fm||0) + (lastW.py_so||0) + (lastW.py_eo||0) + (lastW.py_cf||0) + (lastW.py_hr||0);
 
             const li = document.createElement('li');
-            li.className = 'student-row rank-grid-row'; // Ümumi CSS grid sinifindən istifadə edirik
+            li.className = 'student-row';
             li.style.display = 'grid';
-            li.style.gridTemplateColumns = '30px minmax(130px, 1.5fr) 1fr 1fr 40px';
-            li.style.alignItems = 'center';
+            li.style.gridTemplateColumns = '30px 1fr 80px 80px 40px';
             li.style.textAlign = 'center';
-            li.style.padding = '12px 10px';
 
             li.innerHTML = `
                 <span>${rank}</span>
-                <span style="text-align:left; font-weight:bold; padding-left:5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${name}</span>
+                <span style="text-align:left; font-weight:bold;">${name}</span>
                 <span>${cppCari} pt</span>
                 <span>${pyCari} pt</span>
                 <div class="action-dropdown" style="position:relative;">
-                    <button class="action-btn" style="padding:2px 8px; background:#21262d; border:1px solid #30363d; border-radius:6px; color:#e6edf3; font-size:18px; cursor:pointer;">⋮</button>
+                    <button class="action-btn" style="padding:2px 8px; background:none; border:none; color:#e6edf3; font-size:18px; cursor:pointer;">⋮</button>
                     <div class="action-menu hidden" style="position:absolute; right:0; top:25px; background:#161b22; border:1px solid #30363d; border-radius:6px; z-index:10; min-width:120px; text-align:left;">
-                        <button class="edit-btn" style="width:100%; text-align:left; padding:8px; background:none; border:none; color:#2ea44f; cursor:pointer; font-weight:bold;">✏️ Düzəlt</button>
-                        <button class="delete-btn" style="width:100%; text-align:left; padding:8px; background:none; border:none; color:#da3633; cursor:pointer; font-weight:bold;">🗑️ Sil</button>
+                        <button class="edit-btn" style="width:100%; text-align:left; padding:8px; background:none; border:none; color:#2ea44f; cursor:pointer;">✏️ Düzəlt</button>
+                        <button class="delete-btn" style="width:100%; text-align:left; padding:8px; background:none; border:none; color:#da3633; cursor:pointer;">🗑️ Sil</button>
                     </div>
                 </div>
             `;
@@ -524,6 +522,10 @@ function loadAdminStudentList() {
         });
     });
 }
+
+document.addEventListener('click', () => {
+    document.querySelectorAll('.action-menu').forEach(m => m.classList.add('hidden'));
+});
 
 // 10. ADMIN REDAKTƏ VƏ ƏLAVƏ ETMƏ FORMULARI
 const closeEditModal = document.getElementById('closeEditModal');
@@ -679,87 +681,31 @@ if (searchInput) {
     });
 }
 
-// 12. PDF ÇIXARTMA (ÜMUMİ, C++ VƏ YA PYTHON)
-const exportPdfBtn = document.getElementById('exportPdfBtn');
-const pdfSelect = document.getElementById('pdfSelect');
-
-if (exportPdfBtn && pdfSelect) {
-    exportPdfBtn.addEventListener('click', () => {
-        const type = pdfSelect.value;
-        let title = "TK-117 | ";
-        let theadHTML = "";
-        let tbodyHTML = "";
+// 12. EXCEL (CSV) YÜKLƏMƏ
+const exportExcelBtn = document.getElementById('exportExcelBtn');
+if (exportExcelBtn) {
+    exportExcelBtn.addEventListener('click', () => {
+        let csv = "\uFEFFSıra,Ad Soyad,C++ Balı,Python Balı\n"; 
         let rows = document.querySelectorAll('#adminStudentList .student-row');
-
-        if (type === 'common') {
-            title += "Ümumi Reytinq Siyahısı";
-            theadHTML = `<tr><th>Sıra</th><th style="text-align:left;">Ad Soyad</th><th>C++ Cari</th><th>Py Cari</th><th>Ümumi Bal</th></tr>`;
-            rows.forEach(row => {
-                if (row.style.display !== "none") {
-                    let rank = row.children[0].innerText;
-                    let name = row.children[1].innerText;
-                    let cpp = row.children[2].innerText.replace(' pt', '');
-                    let py = row.children[3].innerText.replace(' pt', '');
-                    let total = Number(cpp) + Number(py);
-                    tbodyHTML += `<tr><td>${rank}</td><td style="text-align:left;">${name}</td><td>${cpp}</td><td>${py}</td><td><b>${total} pt</b></td></tr>`;
-                }
-            });
-        } 
-        else if (type === 'cpp') {
-            title += "C++ Reytinq Siyahısı";
-            theadHTML = `<tr><th>Sıra</th><th style="text-align:left;">Ad Soyad</th><th>C++ Balı</th></tr>`;
-            rows.forEach(row => {
-                if (row.style.display !== "none") {
-                    let rank = row.children[0].innerText;
-                    let name = row.children[1].innerText;
-                    let cpp = row.children[2].innerText;
-                    tbodyHTML += `<tr><td>${rank}</td><td style="text-align:left;">${name}</td><td><b>${cpp}</b></td></tr>`;
-                }
-            });
-        } 
-        else if (type === 'python') {
-            title += "Python Reytinq Siyahısı";
-            theadHTML = `<tr><th>Sıra</th><th style="text-align:left;">Ad Soyad</th><th>Python Balı</th></tr>`;
-            rows.forEach(row => {
-                if (row.style.display !== "none") {
-                    let rank = row.children[0].innerText;
-                    let name = row.children[1].innerText;
-                    let py = row.children[3].innerText;
-                    tbodyHTML += `<tr><td>${rank}</td><td style="text-align:left;">${name}</td><td><b>${py}</b></td></tr>`;
-                }
-            });
-        }
-
-        // PDF yazdırmaq üçün yeni pəncərə (iframe/window)
-        const printWindow = window.open('', '', 'height=800,width=800');
-        printWindow.document.write(`
-            <html>
-                <head>
-                    <title>${title}</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; padding: 20px; color: #333; }
-                        h2 { text-align: center; color: #2ea44f; margin-bottom: 20px; }
-                        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-                        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
-                        th { background-color: #f4f4f4; color: #333; font-weight: bold; }
-                        tr:nth-child(even) { background-color: #f9f9f9; }
-                    </style>
-                </head>
-                <body>
-                    <h2>${title}</h2>
-                    <table>
-                        <thead>${theadHTML}</thead>
-                        <tbody>${tbodyHTML}</tbody>
-                    </table>
-                </body>
-            </html>
-        `);
-        printWindow.document.close();
         
-        // Pəncərə yükləndikdən sonra yazdırma dialoqunu açırıq
-        printWindow.onload = function() {
-            printWindow.focus();
-            printWindow.print();
-        };
+        rows.forEach(row => {
+            if (row.style.display !== "none") {
+                let rank = row.querySelector('span:nth-child(1)').innerText.trim();
+                let name = row.querySelector('span:nth-child(2)').innerText.trim();
+                let cpp = row.querySelector('span:nth-child(3)').innerText.replace(' pt', '').trim();
+                let py = row.querySelector('span:nth-child(4)').innerText.replace(' pt', '').trim();
+                csv += `${rank},${name},${cpp},${py}\n`;
+            }
+        });
+
+        let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        let link = document.createElement("a");
+        let url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", "TK-117_Reytinq.csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     });
 }
