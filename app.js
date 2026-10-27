@@ -462,22 +462,23 @@ function loadAdminStudentList() {
             let pyCari = (lastW.py_fm||0) + (lastW.py_so||0) + (lastW.py_eo||0) + (lastW.py_cf||0) + (lastW.py_hr||0);
 
             const li = document.createElement('li');
-            li.className = 'student-row';
+            li.className = 'student-row rank-grid-row'; // Ümumi CSS grid sinifindən istifadə edirik
             li.style.display = 'grid';
             li.style.gridTemplateColumns = '30px minmax(130px, 1.5fr) 1fr 1fr 40px';
-            li.style.textAlign = 'center';
             li.style.alignItems = 'center';
+            li.style.textAlign = 'center';
+            li.style.padding = '12px 10px';
 
             li.innerHTML = `
                 <span>${rank}</span>
-                <span style="text-align:left; font-weight:bold;">${name}</span>
+                <span style="text-align:left; font-weight:bold; padding-left:5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${name}</span>
                 <span>${cppCari} pt</span>
                 <span>${pyCari} pt</span>
                 <div class="action-dropdown" style="position:relative;">
-                    <button class="action-btn" style="padding:2px 8px; background:none; border:none; color:#e6edf3; font-size:18px; cursor:pointer;">⋮</button>
+                    <button class="action-btn" style="padding:2px 8px; background:#21262d; border:1px solid #30363d; border-radius:6px; color:#e6edf3; font-size:18px; cursor:pointer;">⋮</button>
                     <div class="action-menu hidden" style="position:absolute; right:0; top:25px; background:#161b22; border:1px solid #30363d; border-radius:6px; z-index:10; min-width:120px; text-align:left;">
-                        <button class="edit-btn" style="width:100%; text-align:left; padding:8px; background:none; border:none; color:#2ea44f; cursor:pointer;">✏️ Düzəlt</button>
-                        <button class="delete-btn" style="width:100%; text-align:left; padding:8px; background:none; border:none; color:#da3633; cursor:pointer;">🗑️ Sil</button>
+                        <button class="edit-btn" style="width:100%; text-align:left; padding:8px; background:none; border:none; color:#2ea44f; cursor:pointer; font-weight:bold;">✏️ Düzəlt</button>
+                        <button class="delete-btn" style="width:100%; text-align:left; padding:8px; background:none; border:none; color:#da3633; cursor:pointer; font-weight:bold;">🗑️ Sil</button>
                     </div>
                 </div>
             `;
@@ -523,10 +524,6 @@ function loadAdminStudentList() {
         });
     });
 }
-
-document.addEventListener('click', () => {
-    document.querySelectorAll('.action-menu').forEach(m => m.classList.add('hidden'));
-});
 
 // 10. ADMIN REDAKTƏ VƏ ƏLAVƏ ETMƏ FORMULARI
 const closeEditModal = document.getElementById('closeEditModal');
